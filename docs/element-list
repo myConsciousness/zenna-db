@@ -1,0 +1,9 @@
+org.thinkit.zenna.annotation
+org.thinkit.zenna.catalog
+org.thinkit.zenna.entity
+org.thinkit.zenna.eval
+org.thinkit.zenna.exception
+org.thinkit.zenna.key
+org.thinkit.zenna.loader
+org.thinkit.zenna.mapper
+org.thinkit.zenna.util

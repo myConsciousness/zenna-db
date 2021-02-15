@@ -40,6 +40,11 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
      */
     private ContentMapper<T, R> contentObject;
 
+    /**
+     * 取得したコンテンツのキャッシュ
+     */
+    private List<R> contentCaches;
+
     protected List<R> loadContent() {
 
         final Class<?> contentClass = contentObject.getClass();
