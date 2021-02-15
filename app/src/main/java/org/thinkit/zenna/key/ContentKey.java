@@ -14,46 +14,18 @@
 
 package org.thinkit.zenna.key;
 
-import lombok.RequiredArgsConstructor;
-
 /**
- * The enum that manages selection node key.
+ * The interface that abstracts the content key.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
-@RequiredArgsConstructor
-public enum SelectionNodeKey implements ContentKey {
+public interface ContentKey {
 
     /**
-     * {@code "selectionNodes"}
+     * Returns the key name.
+     *
+     * @return The key name
      */
-    SELECTION_NODES(KeyName.selectionNodes),
-
-    /**
-     * {@code "node"}
-     */
-    NODE(KeyName.node),
-
-    /**
-     * {@code "conditionId"}
-     */
-    CONDITION_ID(KeyName.conditionId);
-
-    /**
-     * The key name
-     */
-    private final KeyName keyName;
-
-    /**
-     * The inner enum that manages key name.
-     */
-    private enum KeyName {
-        selectionNodes, node, conditionId;
-    }
-
-    @Override
-    public String getName() {
-        return this.keyName.name();
-    }
+    public String getName();
 }

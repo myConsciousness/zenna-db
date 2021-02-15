@@ -21,10 +21,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.ToString;
 
 /**
  * Provides operations on input stream.
@@ -32,8 +30,6 @@ import lombok.ToString;
  * @author Kato Shinya
  * @since 1.0.0
  */
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class InputStreamResolver {
 

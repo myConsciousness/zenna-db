@@ -12,48 +12,36 @@
  * the License.
  */
 
-package org.thinkit.zenna.key;
+package org.thinkit.zenna.catalog;
 
+import org.thinkit.api.catalog.BiCatalog;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The enum that manages selection node key.
+ * The catalog that manages the key of content property.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public enum SelectionNodeKey implements ContentKey {
+public enum ContentPropertyKey implements BiCatalog<ContentPropertyKey, String> {
 
     /**
-     * {@code "selectionNodes"}
+     * {@code "contentPackageName="}
      */
-    SELECTION_NODES(KeyName.selectionNodes),
+    CONTENT_PACKAGE_NAME(0, "contentPackageName");
 
     /**
-     * {@code "node"}
+     * The code
      */
-    NODE(KeyName.node),
+    @Getter
+    private final int code;
 
     /**
-     * {@code "conditionId"}
+     * The tag
      */
-    CONDITION_ID(KeyName.conditionId);
-
-    /**
-     * The key name
-     */
-    private final KeyName keyName;
-
-    /**
-     * The inner enum that manages key name.
-     */
-    private enum KeyName {
-        selectionNodes, node, conditionId;
-    }
-
-    @Override
-    public String getName() {
-        return this.keyName.name();
-    }
+    @Getter
+    private final String tag;
 }

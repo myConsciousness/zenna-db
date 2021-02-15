@@ -57,6 +57,11 @@ public final class ContentEvaluator implements Evaluator {
     private Map<String, Object> content;
 
     /**
+     * The attributes of content
+     */
+    private Set<String> attributes;
+
+    /**
      * The conditions of content
      */
     @Builder.Default
@@ -72,7 +77,7 @@ public final class ContentEvaluator implements Evaluator {
         final List<String> conditionIdList = conditionNodes.isEmpty() ? new ArrayList<>(0)
                 : this.getConditionIdList(conditionNodes, conditions);
 
-        return this.getContentList(null, this.content, conditionIdList);
+        return this.getContentList(this.content, conditionIdList);
     }
 
     /**
@@ -90,8 +95,8 @@ public final class ContentEvaluator implements Evaluator {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    private List<Map<String, String>> getContentList(@NonNull Set<String> attributes,
-            @NonNull Map<String, Object> rawContent, @NonNull List<String> conditionIdList) {
+    private List<Map<String, String>> getContentList(@NonNull Map<String, Object> rawContent,
+            @NonNull List<String> conditionIdList) {
 
         final List<Map<String, String>> contentList = new ArrayList<>(0);
         final List<Map<String, Object>> selectionNodes = ContentNodeResolver.getNodeList(rawContent,

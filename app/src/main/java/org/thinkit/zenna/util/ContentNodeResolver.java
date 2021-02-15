@@ -17,7 +17,7 @@ package org.thinkit.zenna.util;
 import java.util.List;
 import java.util.Map;
 
-import org.thinkit.zenna.key.Key;
+import org.thinkit.zenna.key.ContentKey;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -33,41 +33,42 @@ import lombok.NonNull;
 public final class ContentNodeResolver {
 
     /**
-     * Returns the list of nodes associated with the specified {@link Key} from the
-     * content map.
+     * Returns the list of nodes associated with the specified {@link ContentKey}
+     * from the content map.
      * <p>
      * Because it's impossible to avoid warnings when casting with generics, we
      * specify {@link SuppressWarnings} with {@code "unchecked"} to this
-     * {@link #getNodeList(Map, Key)} method.
+     * {@link #getNodeList(Map, ContentKey)} method.
      *
      * @param content    The content map
      * @param contentKey The content key
-     * @return A list of nodes associated with {@link Key}
+     * @return A list of nodes associated with {@link ContentKey}
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
     @SuppressWarnings("unchecked")
-    public static List<Map<String, Object>> getNodeList(@NonNull Map<String, Object> content, @NonNull Key contentKey) {
-        return (List<Map<String, Object>>) content.get(contentKey.getKeyName());
+    public static List<Map<String, Object>> getNodeList(@NonNull Map<String, Object> content,
+            @NonNull ContentKey contentKey) {
+        return (List<Map<String, Object>>) content.get(contentKey.getName());
     }
 
     /**
-     * Returns the node map associated with the specified {@link Key} from the
-     * content map.
+     * Returns the node map associated with the specified {@link ContentKey} from
+     * the content map.
      * <p>
      * Because it's impossible to avoid warnings when casting with generics, we
      * specify {@link SuppressWarnings} with {@code "unchecked"} to this
-     * {@link #getNodeMap(Map, Key)} method.
+     * {@link #getNodeMap(Map, ContentKey)} method.
      *
      * @param content    The content map
      * @param contentKey The content key
-     * @return A list of nodes associated with {@link Key}
+     * @return A list of nodes associated with {@link ContentKey}
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
     @SuppressWarnings("unchecked")
-    public static Map<String, Object> getNodeMap(@NonNull Map<String, Object> content, @NonNull Key contentKey) {
-        return (Map<String, Object>) content.get(contentKey.getKeyName());
+    public static Map<String, Object> getNodeMap(@NonNull Map<String, Object> content, @NonNull ContentKey contentKey) {
+        return (Map<String, Object>) content.get(contentKey.getName());
     }
 
     /**
@@ -80,8 +81,8 @@ public final class ContentNodeResolver {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    public static String getString(@NonNull Map<String, Object> nodeMap, @NonNull Key contentKey) {
-        return getString(nodeMap, contentKey.getKeyName());
+    public static String getString(@NonNull Map<String, Object> nodeMap, @NonNull ContentKey contentKey) {
+        return getString(nodeMap, contentKey.getName());
     }
 
     /**

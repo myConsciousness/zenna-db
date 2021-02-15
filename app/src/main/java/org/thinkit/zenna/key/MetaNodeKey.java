@@ -17,48 +17,23 @@ package org.thinkit.zenna.key;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The enum that manages condition node key.
+ * The catalog that manages node key of content meta.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public enum ConditionNodeKey implements ContentKey {
+public enum MetaNodeKey implements ContentKey {
 
     /**
-     * {@code "conditionNodes"}
+     * {@code "meta"}
      */
-    CONDITION_NODES(KeyName.conditionNodes),
+    META(KeyName.meta),
 
     /**
-     * {@code "node"}
+     * {@code "resultType"}
      */
-    NODE(KeyName.node),
-
-    /**
-     * {@code "conditionId"}
-     */
-    CONDITION_ID(KeyName.conditionId),
-
-    /**
-     * {@code "conditions"}
-     */
-    CONDITIONS(KeyName.conditions),
-
-    /**
-     * {@code "keyName"}
-     */
-    KEY_NAME(KeyName.keyName),
-
-    /**
-     * {@code "operator"}
-     */
-    OPERATOR(KeyName.operator),
-
-    /**
-     * {@code "operand"}
-     */
-    OPERAND(KeyName.operand);
+    RESULT_TYPE(KeyName.resultType);
 
     /**
      * The key name
@@ -69,7 +44,7 @@ public enum ConditionNodeKey implements ContentKey {
      * The inner enum that manages key name
      */
     private enum KeyName {
-        conditionNodes, node, conditionId, conditions, keyName, operator, operand;
+        meta, resultType;
     }
 
     @Override

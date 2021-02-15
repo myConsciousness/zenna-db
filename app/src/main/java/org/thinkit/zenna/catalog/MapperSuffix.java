@@ -12,20 +12,36 @@
  * the License.
  */
 
-package org.thinkit.zenna.key;
+package org.thinkit.zenna.catalog;
+
+import org.thinkit.api.catalog.BiCatalog;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * The interface that abstracts the key.
+ * The catalog that manages suffix of mapper object.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
-public interface Key {
+@RequiredArgsConstructor
+public enum MapperSuffix implements BiCatalog<MapperSuffix, String> {
 
     /**
-     * Returns the key name.
-     *
-     * @return The key name
+     * The suffix value
      */
-    public String getKeyName();
+    VALUE(0, "Mapper");
+
+    /**
+     * The code
+     */
+    @Getter
+    private final int code;
+
+    /**
+     * The tag
+     */
+    @Getter
+    private final String tag;
 }

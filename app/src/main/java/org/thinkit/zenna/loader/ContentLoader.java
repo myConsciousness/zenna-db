@@ -58,11 +58,6 @@ public final class ContentLoader implements Loader {
     private final InputStream contentStream;
 
     /**
-     * The cache of content
-     */
-    private Map<String, Object> contentCache;
-
-    /**
      * Gets each element defined in the content file specified and return it as a
      * list.
      * <p>
@@ -85,12 +80,7 @@ public final class ContentLoader implements Loader {
      */
     public Map<String, Object> load() {
         Preconditions.requireNonNull(this.contentStream);
-
-        if (this.contentCache == null) {
-            this.contentCache = this.getContent(this.contentStream);
-        }
-
-        return this.contentCache;
+        return this.getContent(this.contentStream);
     }
 
     /**
