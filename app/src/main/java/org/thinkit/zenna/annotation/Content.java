@@ -34,8 +34,7 @@ public @interface Content {
 
     /**
      * Specify the name of the content file to be mapped. The file extension is not
-     * required when specifying the content file name. The default value is empty
-     * string.
+     * required when specifying the content file name.
      * <p>
      * When mapping content, inferences can be made from content class names and
      * content file names. Therefore if the class name of the content class to which
@@ -49,5 +48,5 @@ public @interface Content {
      *
      * @return The content name to be used
      */
-    String value() default "";
+    String value();
 }
