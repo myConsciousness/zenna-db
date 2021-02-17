@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
+import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.eval.ContentEvaluator;
@@ -73,7 +74,8 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
         final Map<String, Object> rawContent = this.getContent();
         final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(rawContent, MetaNodeKey.META);
 
-        final ResultType resultType = ResultType.from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
+        final ResultType<R> resultType = ResultType
+                .from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
 
         if (!resultType.isExist()) {
             throw new IllegalStateException();
@@ -83,7 +85,7 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
                 .attributes(resultType.getAttributes()).conditions(this.contentObject.getConditions()).build()
                 .evaluate();
 
-        return List.of();
+        return resultType.createResultEntities(contents);
     }
 
     /**
@@ -121,8 +123,8 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
             return this.cachedContent;
         }
 
-        final InputStream contentStream = this.contentObject.getClassLoader()
-                .getResourceAsStream(String.format("%s.%s", this.getContentName(), ContentExtension.JSON.getTag()));
+        final InputStream contentStream = this.contentObject.getClassLoader().getResourceAsStream(String
+                .format("%s%s.%s", ContentRoot.VALUE.getTag(), this.getContentName(), ContentExtension.JSON.getTag()));
 
         if (contentStream == null) {
             throw new ContentNotFoundException();

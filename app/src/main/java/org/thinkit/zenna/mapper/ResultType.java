@@ -15,11 +15,19 @@
 package org.thinkit.zenna.mapper;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.exception.ResultTypeNotFoundException;
 
 import lombok.AccessLevel;
@@ -37,7 +45,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-final class ResultType implements Serializable {
+final class ResultType<T extends ContentEntity> implements Serializable {
 
     /**
      * シリアルバージョンUID
@@ -78,8 +86,8 @@ final class ResultType implements Serializable {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    public static ResultType from(@NonNull String className) {
-        return new ResultType(className);
+    public static <T extends ContentEntity> ResultType<T> from(@NonNull String className) {
+        return new ResultType<>(className);
     }
 
     /**
@@ -118,5 +126,35 @@ final class ResultType implements Serializable {
         this.cachedAttirbutes = attributes;
 
         return attributes;
+    }
+
+    public List<T> createResultEntities(@NonNull final List<Map<String, String>> contents) {
+
+        final List<T> resultEntities = new ArrayList<>();
+
+        try {
+            for (final Map<String, String> content : contents) {
+                final T resultEntity = this.getResultEntity();
+
+                for (final Entry<String, String> entry : content.entrySet()) {
+                    final Field field = resultEntity.getClass().getDeclaredField(entry.getKey());
+                    field.set(resultEntity, entry.getValue());
+                }
+
+                resultEntities.add(resultEntity);
+            }
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | SecurityException | NoSuchFieldException | NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        }
+
+        return resultEntities;
+    }
+
+    @SuppressWarnings("unchecked")
+    private T getResultEntity() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException {
+        final Constructor<?> constructor = this.resultType.getConstructor();
+        return (T) constructor.newInstance();
     }
 }
