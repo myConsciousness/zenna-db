@@ -65,11 +65,12 @@ public final class ContentEvaluator implements Evaluator {
      * The conditions of content
      */
     @Builder.Default
-    private List<Map<String, String>> conditions = new ArrayList<>(0);
+    private Map<String, String> conditions = new HashMap<>(0);
 
     @Override
     public List<Map<String, String>> evaluate() {
         Preconditions.requireNonEmpty(this.content);
+        Preconditions.requireNonEmpty(this.attributes);
 
         final List<Map<String, Object>> conditionNodes = ContentNodeResolver.getNodeList(this.content,
                 ConditionNodeKey.CONDITION_NODES);
@@ -132,21 +133,19 @@ public final class ContentEvaluator implements Evaluator {
      * @exception NullPointerException If {@code null} is passed as an argument
      */
     private List<String> getConditionIdList(@NonNull List<Map<String, Object>> conditionNodes,
-            @NonNull List<Map<String, String>> conditions) {
+            @NonNull Map<String, String> conditions) {
 
         final List<String> conditionIdList = new ArrayList<>(0);
 
-        conditions.forEach(condition -> {
-            conditionNodes.forEach(nodeList -> {
+        conditionNodes.forEach(nodeList -> {
 
-                final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(nodeList, ConditionNodeKey.NODE);
-                final List<Map<String, Object>> conditionList = ContentNodeResolver.getNodeList(nodeMap,
-                        ConditionNodeKey.CONDITIONS);
+            final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(nodeList, ConditionNodeKey.NODE);
+            final List<Map<String, Object>> conditionList = ContentNodeResolver.getNodeList(nodeMap,
+                    ConditionNodeKey.CONDITIONS);
 
-                if (this.all(conditionList, condition)) {
-                    conditionIdList.add(ContentNodeResolver.getString(nodeMap, ConditionNodeKey.CONDITION_ID));
-                }
-            });
+            if (this.all(conditionList, conditions)) {
+                conditionIdList.add(ContentNodeResolver.getString(nodeMap, ConditionNodeKey.CONDITION_ID));
+            }
         });
 
         return conditionIdList;
