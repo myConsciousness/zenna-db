@@ -17,6 +17,7 @@ package org.thinkit.zenna.mapper;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
@@ -48,6 +49,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends ContentEntity> implements Mapper<R> {
 
+    private static final String FORMAT_CONTENT_PATH = "%s%s.%s";
+
     /**
      * The content object associated with a specific content file
      */
@@ -71,21 +74,15 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
 
     protected List<R> loadContent() {
 
-        final Map<String, Object> rawContent = this.getContent();
-        final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(rawContent, MetaNodeKey.META);
-
-        final ResultType<R> resultType = ResultType
-                .from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
+        final Map<String, Object> rawContent = this.getRawContent();
+        final ResultType<R> resultType = this.getResultType(rawContent);
 
         if (!resultType.isExist()) {
             throw new IllegalStateException();
         }
 
-        final List<Map<String, String>> contents = ContentEvaluator.builder().content(rawContent)
-                .attributes(resultType.getAttributes()).conditions(this.contentObject.getConditions()).build()
-                .evaluate();
-
-        return resultType.createResultEntities(contents);
+        return resultType.createResultEntities(
+                this.evaluateRawContent(rawContent, resultType.getAttributes(), this.contentObject.getConditions()));
     }
 
     /**
@@ -117,19 +114,31 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
         return className.substring(0, className.indexOf(MapperSuffix.VALUE.getTag()));
     }
 
-    private Map<String, Object> getContent() {
+    private Map<String, Object> getRawContent() {
 
         if (this.cachedContent != null) {
             return this.cachedContent;
         }
 
-        final InputStream contentStream = this.contentObject.getClassLoader().getResourceAsStream(String
-                .format("%s%s.%s", ContentRoot.VALUE.getTag(), this.getContentName(), ContentExtension.JSON.getTag()));
+        final InputStream contentStream = this.contentObject.getClassLoader()
+                .getResourceAsStream(String.format(FORMAT_CONTENT_PATH, ContentRoot.VALUE.getTag(),
+                        this.getContentName(), ContentExtension.JSON.getTag()));
 
         if (contentStream == null) {
             throw new ContentNotFoundException();
         }
 
         return ContentLoader.from(contentStream).load();
+    }
+
+    private ResultType<R> getResultType(@NonNull final Map<String, Object> rawContent) {
+        final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(rawContent, MetaNodeKey.META);
+        return ResultType.from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
+    }
+
+    private List<Map<String, String>> evaluateRawContent(@NonNull final Map<String, Object> rawContent,
+            @NonNull final Set<String> attributes, @NonNull final Map<String, String> conditions) {
+        return ContentEvaluator.builder().content(rawContent).attributes(attributes).conditions(conditions).build()
+                .evaluate();
     }
 }
