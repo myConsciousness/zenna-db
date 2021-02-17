@@ -17,14 +17,12 @@ package org.thinkit.zenna.mapper;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-import org.thinkit.common.base.precondition.Preconditions;
 import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
 import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.entity.ContentEntity;
+import org.thinkit.zenna.eval.ContentEvaluator;
 import org.thinkit.zenna.exception.ContentNotFoundException;
 import org.thinkit.zenna.key.MetaNodeKey;
 import org.thinkit.zenna.loader.ContentLoader;
@@ -52,17 +50,12 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
     /**
      * The content object associated with a specific content file
      */
-    private Class<?> contentObject;
+    private ContentObject<R> contentObject;
 
     /**
      * The cache of content
      */
-    private Map<String, Object> contentCache;
-
-    /**
-     * The cache of content attributes
-     */
-    private Set<String> contentaAttributesCache;
+    private Map<String, Object> cachedContent;
 
     /**
      * The constructor.
@@ -71,16 +64,24 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    protected ContentMapper(@NonNull final ContentMapper<T, R> contentMapper) {
-        this.contentObject = contentMapper.getClass();
+    protected ContentMapper(@NonNull final Mapper<R> contentMapper) {
+        this.contentObject = ContentObject.from(contentMapper);
     }
 
     protected List<R> loadContent() {
 
-        final Map<String, Object> content = this.getContent();
+        final Map<String, Object> rawContent = this.getContent();
+        final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(rawContent, MetaNodeKey.META);
 
-        final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(content, MetaNodeKey.META);
-        final String resultType = ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE);
+        final ResultType resultType = ResultType.from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
+
+        if (!resultType.isExist()) {
+            throw new IllegalStateException();
+        }
+
+        final List<Map<String, String>> contents = ContentEvaluator.builder().content(rawContent)
+                .attributes(resultType.getAttributes()).conditions(this.contentObject.getConditions()).build()
+                .evaluate();
 
         return List.of();
     }
@@ -103,10 +104,9 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
      */
     private String getContentName() {
 
-        final Content contentAnnotation = this.contentObject.getAnnotation(Content.class);
-        Preconditions.requireNonNull(contentAnnotation);
+        final Content contentAnnotation = this.contentObject.getContentAnnotation();
 
-        if (!StringUtils.isEmpty(contentAnnotation.value())) {
+        if (contentAnnotation != null) {
             return contentAnnotation.value();
         }
 
@@ -117,8 +117,8 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
 
     private Map<String, Object> getContent() {
 
-        if (!this.contentCache.isEmpty()) {
-            return this.contentCache;
+        if (this.cachedContent != null) {
+            return this.cachedContent;
         }
 
         final InputStream contentStream = this.contentObject.getClassLoader()

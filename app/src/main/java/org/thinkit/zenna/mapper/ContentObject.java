@@ -15,7 +15,15 @@
 package org.thinkit.zenna.mapper;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.thinkit.api.catalog.BiCatalog;
+import org.thinkit.api.catalog.Catalog;
+import org.thinkit.zenna.annotation.Condition;
 import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.entity.ContentEntity;
 
@@ -112,5 +120,71 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      */
     public ClassLoader getClassLoader() {
         return this.contentObject.getClassLoader();
+    }
+
+    /**
+     * Returns a list of {@code Field} objects reflecting all the fields declared by
+     * the class or interface represented by this class object. This includes
+     * public, protected, default (package) access, and private fields, but excludes
+     * inherited fields.
+     * <p>
+     * If this class object represents a class or interface with no declared fields,
+     * then this method returns an empty list.
+     * <p>
+     * If this class object represents an array type, a primitive type, or void,
+     * then this method returns an empty list.
+     * <p>
+     * The elements in the returned array are not sorted and are not in any
+     * particular order.
+     *
+     * @return The list of {@code Field} objects representing all the declared
+     *         fields of this class
+     */
+    public List<Field> getDeclaredFields() {
+        return Arrays.asList(this.contentObject.getDeclaredFields());
+    }
+
+    public Map<String, String> getConditions() {
+
+        final Map<String, String> conditions = new HashMap<>(0);
+
+        this.getDeclaredFields().forEach(field -> {
+            field.setAccessible(true);
+
+            try {
+                conditions.put(this.getConditionKey(field), this.getConditionValue(field));
+            } catch (IllegalArgumentException | IllegalAccessException | NoSuchMethodException | SecurityException e) {
+                throw new IllegalStateException();
+            }
+        });
+
+        return conditions;
+    }
+
+    private String getConditionKey(@NonNull final Field field) {
+
+        final Condition conditionAnnotation = field.getAnnotation(Condition.class);
+
+        if (conditionAnnotation != null) {
+            return conditionAnnotation.value();
+        }
+
+        return field.getName();
+    }
+
+    private String getConditionValue(@NonNull final Field field)
+            throws IllegalArgumentException, IllegalAccessException, NoSuchMethodException, SecurityException {
+
+        final Class<?> fieldType = field.getType();
+
+        if (fieldType.equals(Catalog.class)) {
+            final Catalog<?> catalog = (Catalog<?>) field.get(this.contentObject);
+            return String.valueOf(catalog.getCode());
+        } else if (fieldType.equals(BiCatalog.class)) {
+            final BiCatalog<?, ?> biCatalog = (BiCatalog<?, ?>) field.get(this.contentObject);
+            return String.valueOf(biCatalog.getCode());
+        }
+
+        return String.valueOf(field.get(this.contentObject));
     }
 }
