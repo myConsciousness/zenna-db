@@ -19,10 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
 import org.thinkit.zenna.catalog.ContentRoot;
-import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.eval.ContentEvaluator;
 import org.thinkit.zenna.exception.ContentNotFoundException;
@@ -47,8 +45,11 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends ContentEntity> implements Mapper<R> {
+public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R> {
 
+    /**
+     * The format of content path
+     */
     private static final String FORMAT_CONTENT_PATH = "%s%s.%s";
 
     /**
@@ -82,36 +83,7 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
         }
 
         return resultType.createResultEntities(
-                this.evaluateRawContent(rawContent, resultType.getAttributes(), this.contentObject.getConditions()));
-    }
-
-    /**
-     * Returns the content file name.
-     * <p>
-     * If an alias name is set in the {@link Content} annotation given to the
-     * content class, the specified alias name is used, and if no alias name is
-     * specified in the {@link Content} annotation, the name of the content class is
-     * inferred as the content file name.
-     * <p>
-     * If no alias name is specified in the annotation, the class name up to
-     * {@code "Mapper"} of the annotated content object will be retrieved as the
-     * content file name.
-     *
-     * @return The content file name
-     *
-     * @exception NullPointerException If {@code null} is passed as an argument
-     */
-    private String getContentName() {
-
-        final Content contentAnnotation = this.contentObject.getContentAnnotation();
-
-        if (contentAnnotation != null) {
-            return contentAnnotation.value();
-        }
-
-        final String className = this.contentObject.getSimpleName();
-
-        return className.substring(0, className.indexOf(MapperSuffix.VALUE.getTag()));
+                this.evaluateContent(rawContent, resultType.getAttributes(), this.contentObject.getConditions()));
     }
 
     private Map<String, Object> getRawContent() {
@@ -122,7 +94,7 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
 
         final InputStream contentStream = this.contentObject.getClassLoader()
                 .getResourceAsStream(String.format(FORMAT_CONTENT_PATH, ContentRoot.VALUE.getTag(),
-                        this.getContentName(), ContentExtension.JSON.getTag()));
+                        this.contentObject.getContentName(), ContentExtension.JSON.getTag()));
 
         if (contentStream == null) {
             throw new ContentNotFoundException();
@@ -136,7 +108,7 @@ public abstract class ContentMapper<T extends ContentMapper<T, R>, R extends Con
         return ResultType.from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
     }
 
-    private List<Map<String, String>> evaluateRawContent(@NonNull final Map<String, Object> rawContent,
+    private List<Map<String, String>> evaluateContent(@NonNull final Map<String, Object> rawContent,
             @NonNull final Set<String> attributes, @NonNull final Map<String, String> conditions) {
         return ContentEvaluator.builder().content(rawContent).attributes(attributes).conditions(conditions).build()
                 .evaluate();

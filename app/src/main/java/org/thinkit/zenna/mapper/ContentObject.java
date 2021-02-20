@@ -25,6 +25,7 @@ import org.thinkit.api.catalog.BiCatalog;
 import org.thinkit.api.catalog.Catalog;
 import org.thinkit.zenna.annotation.Condition;
 import org.thinkit.zenna.annotation.Content;
+import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.entity.ContentEntity;
 
 import lombok.AccessLevel;
@@ -142,6 +143,39 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      */
     public List<Field> getDeclaredFields() {
         return Arrays.asList(this.contentObject.getDeclaredFields());
+    }
+
+    /**
+     * Returns the content file name.
+     * <p>
+     * If an alias name is set in the {@link Content} annotation given to the
+     * content class, the specified alias name is used, and if no alias name is
+     * specified in the {@link Content} annotation, the name of the content class is
+     * inferred as the content file name.
+     * <p>
+     * If no alias name is specified in the annotation, the class name up to
+     * {@code "Mapper"} of the annotated content object will be retrieved as the
+     * content file name.
+     *
+     * @return The content file name
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
+    public String getContentName() {
+
+        final Content contentAnnotation = this.getContentAnnotation();
+
+        if (contentAnnotation != null) {
+            return contentAnnotation.value();
+        }
+
+        final String className = this.getSimpleName();
+
+        if (className.endsWith(MapperSuffix.MAPPER.getTag())) {
+            return className.substring(0, className.indexOf(MapperSuffix.MAPPER.getTag()));
+        }
+
+        return className;
     }
 
     public Map<String, String> getConditions() {

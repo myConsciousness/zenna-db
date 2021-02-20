@@ -31,7 +31,7 @@ public enum MapperSuffix implements BiCatalog<MapperSuffix, String> {
     /**
      * The suffix value
      */
-    VALUE(0, "Mapper");
+    MAPPER(0, "Mapper");
 
     /**
      * The code
