@@ -14,6 +14,7 @@
 
 package org.thinkit.zenna.mapper;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -26,7 +27,9 @@ import org.thinkit.api.catalog.BiCatalog;
 import org.thinkit.api.catalog.Catalog;
 import org.thinkit.zenna.annotation.Condition;
 import org.thinkit.zenna.annotation.Content;
+import org.thinkit.zenna.catalog.ContentExtension;
 import org.thinkit.zenna.catalog.ContentPropertyKey;
+import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.config.ContentProperty;
 import org.thinkit.zenna.entity.ContentEntity;
@@ -49,9 +52,14 @@ import lombok.ToString;
 final class ContentObject<T extends ContentEntity> implements Serializable {
 
     /**
-     * シリアルバージョンUID
+     * The serial version UID
      */
     private static final long serialVersionUID = -4141481108885397138L;
+
+    /**
+     * The format of content path
+     */
+    private static final String FORMAT_CONTENT_PATH = "%s%s.%s";
 
     /**
      * The content object associated with a specific content file
@@ -109,21 +117,31 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     }
 
     /**
-     * Returns the class loader for the class. Some implementations may use null to
-     * represent the bootstrap class loader. This method will return null in such
-     * implementations if this class was loaded by the bootstrap class loader.
+     * Returns an input stream for reading the specified resource.
+     * <p>
+     * The search order is described in the documentation for
+     * {@link #getResource(String)} .
+     * <p>
+     * Resources in named modules are subject to the encapsulation rules specified
+     * by {@link Module#getResourceAsStream Module.getResourceAsStream}.
+     * Additionally, and except for the special case where the resource has a name
+     * ending with "{@code .class}", this method will only find resources in
+     * packages of named modules when the package is {@link Module#isOpen(String)
+     * opened} unconditionally.
+     * </p>
      *
-     * @return the class loader that loaded the class or interface represented by
-     *         this {@code Class} object
-     * @throws SecurityException If a security manager is present, and the caller's
-     *                           class loader is not {@code null} and is not the
-     *                           same as or an ancestor of the class loader for the
-     *                           class whose class loader is requested, and the
-     *                           caller does not have the {@link RuntimePermission}
-     *                           {@code ("getClassLoader")}
+     * @param name The resource name
+     *
+     * @return An input stream for reading the resource; {@code null} if the
+     *         resource could not be found, the resource is in a package that is not
+     *         opened unconditionally, or access to the resource is denied by the
+     *         security manager.
+     *
+     * @exception NullPointerException If {@code name} is {@code null}
      */
-    public ClassLoader getClassLoader() {
-        return this.contentObject.getClassLoader();
+    public InputStream getResourceAsStream(@NonNull final String name) {
+        return this.contentObject.getClassLoader().getResourceAsStream(
+                String.format(FORMAT_CONTENT_PATH, ContentRoot.DEFAULT.getTag(), name, ContentExtension.JSON.getTag()));
     }
 
     /**

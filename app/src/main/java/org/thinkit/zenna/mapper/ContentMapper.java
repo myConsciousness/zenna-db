@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.thinkit.zenna.catalog.ContentExtension;
-import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.eval.ContentEvaluator;
 import org.thinkit.zenna.exception.ContentNotFoundException;
@@ -53,6 +51,12 @@ import lombok.ToString;
  * defined in the content file The result will be returned as the result type
  * defined in the content file.
  *
+ * <p>
+ * The generic of this abstract class should be a type that implements the
+ * {@link ContentEntity} interface. Each field defined in the type specified in
+ * this generic will be mapped to each item in the content file and will be the
+ * returned type when the {@link #scan} method is executed.
+ *
  * @author Kato Shinya
  * @since 1.0.0
  */
@@ -60,11 +64,6 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R> {
-
-    /**
-     * The format of content path
-     */
-    private static final String FORMAT_CONTENT_PATH = "%s%s.%s";
 
     /**
      * The cache of content
@@ -94,12 +93,11 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
         }
 
         final String contentName = contentObject.getContentName();
-
-        final InputStream contentStream = contentObject.getClassLoader().getResourceAsStream(String.format(
-                FORMAT_CONTENT_PATH, ContentRoot.DEFAULT.getTag(), contentName, ContentExtension.JSON.getTag()));
+        final InputStream contentStream = contentObject.getResourceAsStream(contentName);
 
         if (contentStream == null) {
-            throw new ContentNotFoundException(String.format("The content name '%s' was not found.", contentName));
+            throw new ContentNotFoundException(
+                    String.format("The content '%s' was not found from resources.", contentName));
         }
 
         return ContentLoader.from(contentStream).load();
