@@ -93,7 +93,7 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
         }
 
         final InputStream contentStream = this.contentObject.getClassLoader()
-                .getResourceAsStream(String.format(FORMAT_CONTENT_PATH, ContentRoot.VALUE.getTag(),
+                .getResourceAsStream(String.format(FORMAT_CONTENT_PATH, ContentRoot.DEFAULT.getTag(),
                         this.contentObject.getContentName(), ContentExtension.JSON.getTag()));
 
         if (contentStream == null) {

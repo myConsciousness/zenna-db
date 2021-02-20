@@ -31,7 +31,7 @@ public enum ContentRoot implements BiCatalog<ContentRoot, String> {
     /**
      * {@code "resources/zenna/"}
      */
-    VALUE(0, "zenna/");
+    DEFAULT(0, "zenna/");
 
     /**
      * The code
