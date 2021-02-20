@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.thinkit.zenna.catalog.ContentPropertyKey;
+import org.thinkit.zenna.catalog.ContentRoot;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -40,7 +41,7 @@ public final class ContentProperty {
     /**
      * The name of property file
      */
-    private static final String PROPERTY_FILE_NAME = "content.properties";
+    private static final String PROPERTY_FILE_NAME = ContentRoot.DEFAULT.getTag() + "content.properties";
 
     /**
      * The properties

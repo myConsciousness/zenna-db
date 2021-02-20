@@ -14,24 +14,18 @@
 
 package org.thinkit.zenna.mapper;
 
-import java.util.List;
-
-import org.thinkit.zenna.entity.ContentEntity;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
- * An interface that abstracts mapping.
+ * The concrete class that extends {@link ContentMapper} for testing.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
-public interface Mapper<R extends ContentEntity> {
-
-    /**
-     * Performs the mapping process between the content class and the content file,
-     * and returns the Entity list containing the items retrieved from the specified
-     * content.
-     *
-     * @return Entity list containing the items retrieved from the specified content
-     */
-    public List<R> scan();
+@ToString
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor(staticName = "newInstance")
+public final class ConcreteContentMapper extends ContentMapper<ConcreteContentEntity> {
 }

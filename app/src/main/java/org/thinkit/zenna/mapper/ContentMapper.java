@@ -39,12 +39,26 @@ import lombok.ToString;
  * files. The content class associated with a specific content file should
  * inherit from this abstract class.
  *
+ * <p>
+ * The {@link #scan} method defined in this abstract class handles all the
+ * linking between the content object inheriting from this abstract class and
+ * the content file.
+ *
+ * <p>
+ * This {@link #scan} method cannot be overridden by content objects that
+ * inherit from this abstract class. In other words, after creating an instance
+ * of a content object that inherits from this abstract class, simply calling
+ * the {@link #scan} method defined in the inherited abstract class will perform
+ * the mapping process, resulting in the acquisition result as the result type
+ * defined in the content file The result will be returned as the result type
+ * defined in the content file.
+ *
  * @author Kato Shinya
  * @since 1.0.0
  */
 @ToString
 @EqualsAndHashCode
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R> {
 
     /**
@@ -53,29 +67,16 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
     private static final String FORMAT_CONTENT_PATH = "%s%s.%s";
 
     /**
-     * The content object associated with a specific content file
-     */
-    private ContentObject<R> contentObject;
-
-    /**
      * The cache of content
      */
     private Map<String, Object> cachedContent;
 
-    /**
-     * The constructor.
-     *
-     * @param contentMapper The mapper object for content file
-     *
-     * @exception NullPointerException If {@code null} is passed as an argument
-     */
-    protected ContentMapper(@NonNull final Mapper<R> contentMapper) {
-        this.contentObject = ContentObject.from(contentMapper);
-    }
+    @Override
+    public final List<R> scan() {
 
-    protected List<R> loadContent() {
+        final ContentObject<R> contentObject = ContentObject.from(this);
 
-        final Map<String, Object> rawContent = this.getRawContent();
+        final Map<String, Object> rawContent = this.getRawContent(contentObject);
         final ResultType<R> resultType = this.getResultType(rawContent);
 
         if (!resultType.isExist()) {
@@ -83,21 +84,22 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
         }
 
         return resultType.createResultEntities(
-                this.evaluateContent(rawContent, resultType.getAttributes(), this.contentObject.getConditions()));
+                this.evaluateContent(rawContent, resultType.getAttributes(), contentObject.getConditions()));
     }
 
-    private Map<String, Object> getRawContent() {
+    private Map<String, Object> getRawContent(@NonNull final ContentObject<R> contentObject) {
 
         if (this.cachedContent != null) {
             return this.cachedContent;
         }
 
-        final InputStream contentStream = this.contentObject.getClassLoader()
-                .getResourceAsStream(String.format(FORMAT_CONTENT_PATH, ContentRoot.DEFAULT.getTag(),
-                        this.contentObject.getContentName(), ContentExtension.JSON.getTag()));
+        final String contentName = contentObject.getContentName();
+
+        final InputStream contentStream = contentObject.getClassLoader().getResourceAsStream(String.format(
+                FORMAT_CONTENT_PATH, ContentRoot.DEFAULT.getTag(), contentName, ContentExtension.JSON.getTag()));
 
         if (contentStream == null) {
-            throw new ContentNotFoundException();
+            throw new ContentNotFoundException(String.format("The content name '%s' was not found.", contentName));
         }
 
         return ContentLoader.from(contentStream).load();

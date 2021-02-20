@@ -29,9 +29,9 @@ import lombok.RequiredArgsConstructor;
 public enum ContentPropertyKey implements BiCatalog<ContentPropertyKey, String> {
 
     /**
-     * {@code "contentPackageName="}
+     * {@code "contentPackage="}
      */
-    CONTENT_PACKAGE_NAME(0, "contentPackageName");
+    CONTENT_PACKAGE(0, "contentPackage");
 
     /**
      * The code

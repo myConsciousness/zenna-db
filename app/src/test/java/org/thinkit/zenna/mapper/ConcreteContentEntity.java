@@ -14,24 +14,33 @@
 
 package org.thinkit.zenna.mapper;
 
-import java.util.List;
+import java.io.Serializable;
 
 import org.thinkit.zenna.entity.ContentEntity;
 
+import lombok.Data;
+
 /**
- * An interface that abstracts mapping.
+ * The concrete entity class that implements {@link ContentEntity} for testing.
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
-public interface Mapper<R extends ContentEntity> {
+@Data
+public final class ConcreteContentEntity implements ContentEntity, Serializable {
 
     /**
-     * Performs the mapping process between the content class and the content file,
-     * and returns the Entity list containing the items retrieved from the specified
-     * content.
-     *
-     * @return Entity list containing the items retrieved from the specified content
+     * The serial version UID
      */
-    public List<R> scan();
+    private static final long serialVersionUID = -4415144901518895788L;
+
+    /**
+     * The test field 1
+     */
+    private String test1;
+
+    /**
+     * The test field 2
+     */
+    private String test2;
 }

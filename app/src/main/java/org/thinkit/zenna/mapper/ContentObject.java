@@ -21,11 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.thinkit.api.catalog.BiCatalog;
 import org.thinkit.api.catalog.Catalog;
 import org.thinkit.zenna.annotation.Condition;
 import org.thinkit.zenna.annotation.Content;
+import org.thinkit.zenna.catalog.ContentPropertyKey;
 import org.thinkit.zenna.catalog.MapperSuffix;
+import org.thinkit.zenna.config.ContentProperty;
 import org.thinkit.zenna.entity.ContentEntity;
 
 import lombok.AccessLevel;
@@ -166,16 +169,16 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
         final Content contentAnnotation = this.getContentAnnotation();
 
         if (contentAnnotation != null) {
-            return contentAnnotation.value();
+            return this.getFullContentName(contentAnnotation.value());
         }
 
         final String className = this.getSimpleName();
 
         if (className.endsWith(MapperSuffix.MAPPER.getTag())) {
-            return className.substring(0, className.indexOf(MapperSuffix.MAPPER.getTag()));
+            return this.getFullContentName(className.substring(0, className.indexOf(MapperSuffix.MAPPER.getTag())));
         }
 
-        return className;
+        return this.getFullContentName(className);
     }
 
     public Map<String, String> getConditions() {
@@ -193,6 +196,18 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
         });
 
         return conditions;
+    }
+
+    private String getFullContentName(@NonNull String contentName) {
+
+        final ContentProperty contentProperty = ContentProperty.from(this.contentObject);
+        final String contentPackageName = contentProperty.getProperty(ContentPropertyKey.CONTENT_PACKAGE);
+
+        if (StringUtils.isEmpty(contentPackageName)) {
+            return contentName;
+        }
+
+        return contentPackageName + contentName;
     }
 
     private String getConditionKey(@NonNull final Field field) {

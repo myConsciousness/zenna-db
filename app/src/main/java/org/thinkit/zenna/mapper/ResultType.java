@@ -138,6 +138,7 @@ final class ResultType<T extends ContentEntity> implements Serializable {
 
                 for (final Entry<String, String> entry : content.entrySet()) {
                     final Field field = resultEntity.getClass().getDeclaredField(entry.getKey());
+                    field.setAccessible(true);
                     field.set(resultEntity, entry.getValue());
                 }
 

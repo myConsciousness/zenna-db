@@ -1,0 +1,18 @@
+{
+    "meta": {
+        "author": "Kato Shinya",
+        "encoding": "UTF-8",
+        "description": "The content for testing.",
+        "resultType": "org.thinkit.zenna.mapper.ConcreteContentEntity"
+    },
+    "selectionNodes": [
+        {
+            "node": {
+                "conditionId": "",
+                "test1": "success1",
+                "test2": "success2"
+            }
+        }
+    ],
+    "conditionNodes": []
+}
