@@ -83,12 +83,12 @@ loadScripts(document, 'script');</script>
 <section class="description">
 <dl class="notes">
 <dt>すべての実装されたインタフェース:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/io/Serializable.html" title="java.io内のクラスまたはインタフェース" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Comparable.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Comparable</a>&lt;<a href="SelectionNodeKey.html" title="org.thinkit.zenna.key内の列挙型">SelectionNodeKey</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/constant/Constable.html" title="java.lang.constant内のクラスまたはインタフェース" class="external-link">Constable</a></code>, <code><a href="Key.html" title="org.thinkit.zenna.key内のインタフェース">Key</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/io/Serializable.html" title="java.io内のクラスまたはインタフェース" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Comparable.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Comparable</a>&lt;<a href="SelectionNodeKey.html" title="org.thinkit.zenna.key内の列挙型">SelectionNodeKey</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/constant/Constable.html" title="java.lang.constant内のクラスまたはインタフェース" class="external-link">Constable</a></code>, <code><a href="ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a></code></dd>
 </dl>
 <hr>
 <pre>public enum <span class="type-name-label">SelectionNodeKey</span>
 extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Enum.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Enum</a>&lt;<a href="SelectionNodeKey.html" title="org.thinkit.zenna.key内の列挙型">SelectionNodeKey</a>&gt;
-implements <a href="Key.html" title="org.thinkit.zenna.key内のインタフェース">Key</a></pre>
+implements <a href="ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a></pre>
 <div class="block">The enum that manages selection node key.</div>
 <dl class="notes">
 <dt>導入されたバージョン:</dt>
@@ -161,7 +161,7 @@ implements <a href="Key.html" title="org.thinkit.zenna.key内のインタフェ�
 <tbody>
 <tr class="alt-color" id="i0">
 <td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getKeyName()">getKeyName</a></span>()</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getName()">getName</a></span>()</code></th>
 <td class="col-last">
 <div class="block">Returns the key name.</div>
 </td>
@@ -263,14 +263,14 @@ implements <a href="Key.html" title="org.thinkit.zenna.key内のインタフェ�
 </section>
 </li>
 <li>
-<section class="detail" id="getKeyName()">
-<h3>getKeyName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">getKeyName</span>()</div>
-<div class="block"><span class="descfrm-type-label">インタフェースからコピーされた説明:&nbsp;<code><a href="Key.html#getKeyName()">Key</a></code></span></div>
+<section class="detail" id="getName()">
+<h3>getName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">getName</span>()</div>
+<div class="block"><span class="descfrm-type-label">インタフェースからコピーされた説明:&nbsp;<code><a href="ContentKey.html#getName()">ContentKey</a></code></span></div>
 <div class="block">Returns the key name.</div>
 <dl class="notes">
 <dt>定義:</dt>
-<dd><code><a href="Key.html#getKeyName()">getKeyName</a></code>&nbsp;インタフェース内&nbsp;<code><a href="Key.html" title="org.thinkit.zenna.key内のインタフェース">Key</a></code></dd>
+<dd><code><a href="ContentKey.html#getName()">getName</a></code>&nbsp;インタフェース内&nbsp;<code><a href="ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a></code></dd>
 <dt>戻り値:</dt>
 <dd>The key name</dd>
 </dl>

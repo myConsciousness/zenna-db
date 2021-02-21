@@ -55,6 +55,7 @@ loadScripts(document, 'script');</script>
 <ul class="horizontal">
 <li><a href="org/thinkit/zenna/annotation/package-tree.html">org.thinkit.zenna.annotation</a>, </li>
 <li><a href="org/thinkit/zenna/catalog/package-tree.html">org.thinkit.zenna.catalog</a>, </li>
+<li><a href="org/thinkit/zenna/config/package-tree.html">org.thinkit.zenna.config</a>, </li>
 <li><a href="org/thinkit/zenna/entity/package-tree.html">org.thinkit.zenna.entity</a>, </li>
 <li><a href="org/thinkit/zenna/eval/package-tree.html">org.thinkit.zenna.eval</a>, </li>
 <li><a href="org/thinkit/zenna/exception/package-tree.html">org.thinkit.zenna.exception</a>, </li>
@@ -72,8 +73,9 @@ loadScripts(document, 'script');</script>
 <li class="circle">org.thinkit.zenna.eval.<a href="org/thinkit/zenna/eval/ContentEvaluator.html" title="org.thinkit.zenna.eval内のクラス"><span class="type-name-link">ContentEvaluator</span></a> (implements org.thinkit.zenna.eval.<a href="org/thinkit/zenna/eval/Evaluator.html" title="org.thinkit.zenna.eval内のインタフェース">Evaluator</a>)</li>
 <li class="circle">org.thinkit.zenna.eval.<a href="org/thinkit/zenna/eval/ContentEvaluator.ContentEvaluatorBuilder.html" title="org.thinkit.zenna.eval内のクラス"><span class="type-name-link">ContentEvaluator.ContentEvaluatorBuilder</span></a></li>
 <li class="circle">org.thinkit.zenna.loader.<a href="org/thinkit/zenna/loader/ContentLoader.html" title="org.thinkit.zenna.loader内のクラス"><span class="type-name-link">ContentLoader</span></a> (implements org.thinkit.zenna.loader.<a href="org/thinkit/zenna/loader/Loader.html" title="org.thinkit.zenna.loader内のインタフェース">Loader</a>)</li>
-<li class="circle">org.thinkit.zenna.mapper.<a href="org/thinkit/zenna/mapper/ContentMapper.html" title="org.thinkit.zenna.mapper内のクラス"><span class="type-name-link">ContentMapper</span></a>&lt;T,&#8203;R&gt; (implements org.thinkit.zenna.mapper.<a href="org/thinkit/zenna/mapper/Mapper.html" title="org.thinkit.zenna.mapper内のインタフェース">Mapper</a>&lt;R&gt;)</li>
+<li class="circle">org.thinkit.zenna.mapper.<a href="org/thinkit/zenna/mapper/ContentMapper.html" title="org.thinkit.zenna.mapper内のクラス"><span class="type-name-link">ContentMapper</span></a>&lt;R&gt; (implements org.thinkit.zenna.mapper.<a href="org/thinkit/zenna/mapper/Mapper.html" title="org.thinkit.zenna.mapper内のインタフェース">Mapper</a>&lt;R&gt;)</li>
 <li class="circle">org.thinkit.zenna.util.<a href="org/thinkit/zenna/util/ContentNodeResolver.html" title="org.thinkit.zenna.util内のクラス"><span class="type-name-link">ContentNodeResolver</span></a></li>
+<li class="circle">org.thinkit.zenna.config.<a href="org/thinkit/zenna/config/ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><span class="type-name-link">ContentProperty</span></a></li>
 <li class="circle">org.thinkit.zenna.util.<a href="org/thinkit/zenna/util/InputStreamResolver.html" title="org.thinkit.zenna.util内のクラス"><span class="type-name-link">InputStreamResolver</span></a></li>
 <li class="circle">org.thinkit.zenna.util.<a href="org/thinkit/zenna/util/JsonConverter.html" title="org.thinkit.zenna.util内のクラス"><span class="type-name-link">JsonConverter</span></a></li>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Throwable.html" title="java.lang内のクラスまたはインタフェース" class="external-link"><span class="type-name-link">Throwable</span></a> (implements java.io.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/io/Serializable.html" title="java.io内のクラスまたはインタフェース" class="external-link">Serializable</a>)
@@ -84,6 +86,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">org.thinkit.zenna.exception.<a href="org/thinkit/zenna/exception/ContentNotFoundException.html" title="org.thinkit.zenna.exception内のクラス"><span class="type-name-link">ContentNotFoundException</span></a></li>
 <li class="circle">org.thinkit.zenna.exception.<a href="org/thinkit/zenna/exception/ContentParsingException.html" title="org.thinkit.zenna.exception内のクラス"><span class="type-name-link">ContentParsingException</span></a></li>
+<li class="circle">org.thinkit.zenna.exception.<a href="org/thinkit/zenna/exception/ResultTypeNotFoundException.html" title="org.thinkit.zenna.exception内のクラス"><span class="type-name-link">ResultTypeNotFoundException</span></a></li>
 </ul>
 </li>
 </ul>
@@ -98,8 +101,8 @@ loadScripts(document, 'script');</script>
 <h2 title="インタフェース階層">インタフェース階層</h2>
 <ul>
 <li class="circle">org.thinkit.zenna.entity.<a href="org/thinkit/zenna/entity/ContentEntity.html" title="org.thinkit.zenna.entity内のインタフェース"><span class="type-name-link">ContentEntity</span></a></li>
+<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ContentKey.html" title="org.thinkit.zenna.key内のインタフェース"><span class="type-name-link">ContentKey</span></a></li>
 <li class="circle">org.thinkit.zenna.eval.<a href="org/thinkit/zenna/eval/Evaluator.html" title="org.thinkit.zenna.eval内のインタフェース"><span class="type-name-link">Evaluator</span></a></li>
-<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/Key.html" title="org.thinkit.zenna.key内のインタフェース"><span class="type-name-link">Key</span></a></li>
 <li class="circle">org.thinkit.zenna.loader.<a href="org/thinkit/zenna/loader/Loader.html" title="org.thinkit.zenna.loader内のインタフェース"><span class="type-name-link">Loader</span></a></li>
 <li class="circle">org.thinkit.zenna.mapper.<a href="org/thinkit/zenna/mapper/Mapper.html" title="org.thinkit.zenna.mapper内のインタフェース"><span class="type-name-link">Mapper</span></a>&lt;R&gt;</li>
 </ul>
@@ -118,9 +121,13 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Enum.html" title="java.lang内のクラスまたはインタフェース" class="external-link"><span class="type-name-link">Enum</span></a>&lt;E&gt; (implements java.lang.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Comparable.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Comparable</a>&lt;T&gt;, java.lang.constant.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/constant/Constable.html" title="java.lang.constant内のクラスまたはインタフェース" class="external-link">Constable</a>, java.io.<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/io/Serializable.html" title="java.io内のクラスまたはインタフェース" class="external-link">Serializable</a>)
 <ul>
-<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ConditionNodeKey.html" title="org.thinkit.zenna.key内の列挙型"><span class="type-name-link">ConditionNodeKey</span></a> (implements org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/Key.html" title="org.thinkit.zenna.key内のインタフェース">Key</a>)</li>
+<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ConditionNodeKey.html" title="org.thinkit.zenna.key内の列挙型"><span class="type-name-link">ConditionNodeKey</span></a> (implements org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a>)</li>
 <li class="circle">org.thinkit.zenna.catalog.<a href="org/thinkit/zenna/catalog/ContentExtension.html" title="org.thinkit.zenna.catalog内の列挙型"><span class="type-name-link">ContentExtension</span></a> (implements org.thinkit.api.catalog.BiCatalog&lt;E,&#8203;T&gt;)</li>
-<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/SelectionNodeKey.html" title="org.thinkit.zenna.key内の列挙型"><span class="type-name-link">SelectionNodeKey</span></a> (implements org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/Key.html" title="org.thinkit.zenna.key内のインタフェース">Key</a>)</li>
+<li class="circle">org.thinkit.zenna.catalog.<a href="org/thinkit/zenna/catalog/ContentPropertyKey.html" title="org.thinkit.zenna.catalog内の列挙型"><span class="type-name-link">ContentPropertyKey</span></a> (implements org.thinkit.api.catalog.BiCatalog&lt;E,&#8203;T&gt;)</li>
+<li class="circle">org.thinkit.zenna.catalog.<a href="org/thinkit/zenna/catalog/ContentRoot.html" title="org.thinkit.zenna.catalog内の列挙型"><span class="type-name-link">ContentRoot</span></a> (implements org.thinkit.api.catalog.BiCatalog&lt;E,&#8203;T&gt;)</li>
+<li class="circle">org.thinkit.zenna.catalog.<a href="org/thinkit/zenna/catalog/MapperSuffix.html" title="org.thinkit.zenna.catalog内の列挙型"><span class="type-name-link">MapperSuffix</span></a> (implements org.thinkit.api.catalog.BiCatalog&lt;E,&#8203;T&gt;)</li>
+<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/MetaNodeKey.html" title="org.thinkit.zenna.key内の列挙型"><span class="type-name-link">MetaNodeKey</span></a> (implements org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a>)</li>
+<li class="circle">org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/SelectionNodeKey.html" title="org.thinkit.zenna.key内の列挙型"><span class="type-name-link">SelectionNodeKey</span></a> (implements org.thinkit.zenna.key.<a href="org/thinkit/zenna/key/ContentKey.html" title="org.thinkit.zenna.key内のインタフェース">ContentKey</a>)</li>
 </ul>
 </li>
 </ul>

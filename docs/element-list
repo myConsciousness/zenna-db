@@ -1,5 +1,6 @@
 org.thinkit.zenna.annotation
 org.thinkit.zenna.catalog
+org.thinkit.zenna.config
 org.thinkit.zenna.entity
 org.thinkit.zenna.eval
 org.thinkit.zenna.exception
