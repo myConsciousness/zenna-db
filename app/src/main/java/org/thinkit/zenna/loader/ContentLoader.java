@@ -15,9 +15,8 @@
 package org.thinkit.zenna.loader;
 
 import java.io.InputStream;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.thinkit.common.base.precondition.Preconditions;
 import org.thinkit.zenna.util.InputStreamResolver;
@@ -31,17 +30,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
- * The class that defines the process of loading the content data based on the
- * specified content definition.
+ * The class that defines the content loading process.
+ *
  * <p>
- * It provides a {@link #load(InputStream, Set)} method to load content data
- * without conditions, and a {@link #load(InputStream, Set, List)} method to
- * load content data with conditions.
+ * In order to create an instance of this {@link ContentLoader} class, use the
+ * {@link #from(InputStream)} method and pass the input stream object of the
+ * content resource as an initialization argument. Even if the input stream
+ * object of the content for initialization is {@code null} , no exception will
+ * be thrown when executing the constructor process, but a
+ * {@link NullPointerException} will be thrown when executing the {@link #load}
+ * method. For this reason, be sure to pass a content input stream object that
+ * is not {@link null} in order for the content loading process to be
+ * successful.
+ *
  * <p>
- * If the value of {@code "conditionId"} defined in the content is an empty
- * string, the record will be loaded unconditionally. If you have defined a
- * value for the conditionId of the content, be sure to define a condition for
- * the content and call {@link #load(InputStream, Set, List)}.
+ * After creating an instance of the {@link ContentLoader} class based on the
+ * above points, simply call the {@link #load} method. This method parses the
+ * content input stream object passed when creating an instance of the
+ * {@link ContentLoader} class, converts the content string defined in JSON
+ * format into the structure of {@link LinkedHashMap} , and returns it.
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -58,36 +65,29 @@ public final class ContentLoader implements Loader {
     private final InputStream contentStream;
 
     /**
-     * Gets each element defined in the content file specified and return it as a
-     * list.
+     * {@inheritDoc}
+     *
      * <p>
-     * Use this {@link ContentLoader#load(InputStream, Set, List)} method if there
-     * are no acquisition conditions in the content definition.
+     * Performs the content loading process based on the content input stream
+     * specified when creating an instance of this class. The loaded content will be
+     * formatted and returned in the format {@link LinkedHashMap} .
      *
-     * <pre>
-     * Get the content data with conditions:
-     * <code>List&lt;Map&lt;String, String&gt;&gt; contents = ContentLoader.load(contentStream, attributes, conditions);</code>
-     * </pre>
+     * @return The loaded content
      *
-     * @param contentStream The stream of content file
-     * @param attributes    The Attribute names to be acquired
-     * @param conditions    The conditional list to use when getting data from the
-     *                      content file
-     * @return The List containing the elements retrieved from the content file
-     *
-     * @exception NullPointerException     If {@code null} is passed as an argument
-     * @exception IllegalArgumentException If the attribute list is empty
+     * @exception NullPointerException If the input stream content is {@code null}
      */
+    @Override
     public Map<String, Object> load() {
         Preconditions.requireNonNull(this.contentStream);
         return this.getContent(this.contentStream);
     }
 
     /**
-     * Returns content data from the input stream of content file.
+     * Parses the content input stream passed as an argument, and returns the
+     * obtained JSON format content string in {@link LinkedHashMap} structure.
      *
-     * @param contentStream The stream of content file
-     * @return The content data from the input stream of content
+     * @param contentStream The input stream of content
+     * @return The content in {@link LinkedHashMap} structure
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
