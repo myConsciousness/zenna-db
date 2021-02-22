@@ -41,7 +41,7 @@ public final class ContentProperty {
     /**
      * The name of property file
      */
-    private static final String PROPERTY_FILE_NAME = ContentRoot.DEFAULT.getTag() + "content.properties";
+    private static final String PROPERTY_FILE_NAME = ContentRoot.DEFAULT.getTag() + "/content.properties";
 
     /**
      * The properties

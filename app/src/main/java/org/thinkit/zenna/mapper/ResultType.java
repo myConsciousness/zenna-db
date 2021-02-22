@@ -48,7 +48,7 @@ import lombok.ToString;
 final class ResultType<T extends ContentEntity> implements Serializable {
 
     /**
-     * シリアルバージョンUID
+     * The serial version UID
      */
     private static final long serialVersionUID = -3664581429594247412L;
 

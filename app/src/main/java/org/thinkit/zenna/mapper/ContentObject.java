@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.thinkit.api.catalog.BiCatalog;
 import org.thinkit.api.catalog.Catalog;
 import org.thinkit.zenna.annotation.Condition;
@@ -219,13 +218,14 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private String getFullContentName(@NonNull String contentName) {
 
         final ContentProperty contentProperty = ContentProperty.from(this.contentObject);
-        final String contentPackageName = contentProperty.getProperty(ContentPropertyKey.CONTENT_PACKAGE);
+        final ContentPackage contentPackage = ContentPackage
+                .from(contentProperty.getProperty(ContentPropertyKey.CONTENT_PACKAGE));
 
-        if (StringUtils.isEmpty(contentPackageName)) {
-            return contentName;
-        }
+        final StringBuilder fullContentName = new StringBuilder();
+        fullContentName.append(contentPackage.getPackage());
+        fullContentName.append(contentName);
 
-        return contentPackageName + contentName;
+        return fullContentName.toString();
     }
 
     private String getConditionKey(@NonNull final Field field) {
