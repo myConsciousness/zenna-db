@@ -12,7 +12,7 @@
  * the License.
  */
 
-package org.thinkit.zenna.mapper;
+package org.thinkit.zenna.config;
 
 import java.io.Serializable;
 

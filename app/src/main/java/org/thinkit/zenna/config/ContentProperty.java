@@ -90,6 +90,10 @@ public final class ContentProperty {
         return this.properties != null;
     }
 
+    public String getContentPackage() {
+        return ContentPackage.from(this.getProperty(ContentPropertyKey.CONTENT_PACKAGE)).getPackage();
+    }
+
     /**
      * Searches for the property with the specified key in this property list. If
      * the key is not found in this property list, the default property list, and
@@ -99,7 +103,7 @@ public final class ContentProperty {
      * @param key The property key
      * @return The value in this property list with the specified key value
      */
-    public String getProperty(@NonNull final ContentPropertyKey key) {
+    private String getProperty(@NonNull final ContentPropertyKey key) {
         return this.properties.getProperty(key.getTag());
     }
 }

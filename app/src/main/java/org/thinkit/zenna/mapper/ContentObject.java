@@ -27,7 +27,6 @@ import org.thinkit.api.catalog.Catalog;
 import org.thinkit.zenna.annotation.Condition;
 import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
-import org.thinkit.zenna.catalog.ContentPropertyKey;
 import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.catalog.MapperSuffix;
 import org.thinkit.zenna.config.ContentProperty;
@@ -218,11 +217,9 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private String getFullContentName(@NonNull String contentName) {
 
         final ContentProperty contentProperty = ContentProperty.from(this.contentObject);
-        final ContentPackage contentPackage = ContentPackage
-                .from(contentProperty.getProperty(ContentPropertyKey.CONTENT_PACKAGE));
 
         final StringBuilder fullContentName = new StringBuilder();
-        fullContentName.append(contentPackage.getPackage());
+        fullContentName.append(contentProperty.getContentPackage());
         fullContentName.append(contentName);
 
         return fullContentName.toString();
