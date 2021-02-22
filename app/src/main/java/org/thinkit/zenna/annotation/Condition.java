@@ -42,7 +42,7 @@ public @interface Condition {
      * from the key name defined in the content file with this annotation, specify
      * any key name in this field.
      *
-     * @return The condition key
+     * @return The alias name of condition
      */
     String value();
 }
