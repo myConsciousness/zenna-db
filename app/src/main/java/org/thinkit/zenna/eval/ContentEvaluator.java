@@ -38,8 +38,51 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
- * This class defines the process of evaluating the specified arbitrary
- * conditions and the conditions defined in the content file.
+ * The class that defines the process of evaluating the defined content based on
+ * the given inputs.
+ *
+ * <p>
+ * The builder pattern is used as the process when creating an instance of this
+ * class. When creating an instance of this class, first call the
+ * {@link #builder()} method. The {@link #builder()} method returns an instance
+ * of itself, subsequent processing can be described in the form of a method
+ * chain. And you can create a new instance of the {@link ContentEvaluator}
+ * class by setting the required and optional fields after calling the
+ * {@link #builder()} method, and then calling the
+ * {@link ContentEvaluatorBuilder#build()} method.
+ *
+ * <p>
+ * The required inputs for creating an instance of this class and performing
+ * subsequent processing successfully are an object in the {@link Map} structure
+ * that stores content information and an object in the {@link Set} structure
+ * that stores the key names defined under the {@code "selectionNodes"} of the
+ * content. The condition to get the content item can be specified by an object
+ * of {@link Map} structure, but specifying this condition is optional and not
+ * required. If no content acquisition condition is specified, all items under
+ * {@code "selectionNodes"} in the content file whose {@code "conditionId"} is
+ * empty will be acquired.
+ *
+ * <p>
+ * To set the {@link Map} object representing the content, call the
+ * {@link ContentEvaluatorBuilder#content(Map)} method, and to set the
+ * {@link Set} object representing the key name of the item to be retrieved,
+ * call the {@link ContentEvaluatorBuilder#attributes(Set)} method. To set a
+ * {@link Map} object that represents the conditions of an arbitrary item, call
+ * {@link ContentEvaluatorBuilder#conditions(Map)} to set it. After setting the
+ * data required for the evaluation process, call the
+ * {@link ContentEvaluatorBuilder#build()} method and execute the
+ * {@link #evaluate()} method. The content data evaluated based on the specified
+ * input will be returned as an object of {@link List} structure.
+ *
+ * <p>
+ * The required field must be an object that is not {@code null} and is not
+ * empty in the case of a collection. The initial value of the condition object,
+ * which is an optional item, is an empty {@link Map} object, and {@code null}
+ * is not allowed. If the above values are set at the time of instance creation,
+ * no exception will be thrown when executing the
+ * {@link ContentEvaluatorBuilder#build()} method, but an exception will always
+ * be thrown when checking the preconditions when executing the
+ * {@link #evaluate()} method.
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -71,6 +114,7 @@ public final class ContentEvaluator implements Evaluator {
     public List<Map<String, String>> evaluate() {
         Preconditions.requireNonEmpty(this.content);
         Preconditions.requireNonEmpty(this.attributes);
+        Preconditions.requireNonNull(this.conditions);
 
         final List<Map<String, Object>> conditionNodes = ContentNodeResolver.getNodeList(this.content,
                 ConditionNodeKey.CONDITION_NODES);
@@ -83,6 +127,7 @@ public final class ContentEvaluator implements Evaluator {
 
     /**
      * Returns the content list based on the information passed as arguments.
+     *
      * <p>
      * A record with a condition ID in the content definition will be fetched only
      * if it matches the condition defined in the content. If there is no condition
@@ -169,7 +214,7 @@ public final class ContentEvaluator implements Evaluator {
 
         final Set<Entry<String, String>> entrySet = conditions.entrySet();
 
-        for (Map<String, Object> contentCondition : contentConditionList) {
+        for (final Map<String, Object> contentCondition : contentConditionList) {
             final String keyName = ContentNodeResolver.getString(contentCondition, ConditionNodeKey.KEY_NAME);
             final String value = ContentNodeResolver.getString(contentCondition, ConditionNodeKey.OPERAND);
 
