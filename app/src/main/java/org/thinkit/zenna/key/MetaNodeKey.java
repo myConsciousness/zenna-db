@@ -17,7 +17,9 @@ package org.thinkit.zenna.key;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The catalog that manages node key of content meta.
+ * The enum class that manages the key names supported when defining metas in
+ * content files. The content key name of each element can be retrieved by
+ * calling the {@link #getName} method.
  *
  * @author Kato Shinya
  * @since 1.0.0

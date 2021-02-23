@@ -15,7 +15,9 @@
 package org.thinkit.zenna.key;
 
 /**
- * The interface that abstracts the content key.
+ * The interface that abstracts key names supported as a framework to be used
+ * when defining content files. Be sure to implement this interface if you want
+ * to add content keys supported by the framework.
  *
  * @author Kato Shinya
  * @since 1.0.0
