@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.thinkit.common.base.precondition.Preconditions;
+import org.thinkit.common.base.precondition.exception.PreconditionFailedException;
 import org.thinkit.zenna.key.ConditionNodeKey;
 import org.thinkit.zenna.key.SelectionNodeKey;
 import org.thinkit.zenna.util.ContentNodeResolver;
@@ -110,11 +111,34 @@ public final class ContentEvaluator implements Evaluator {
     @Builder.Default
     private Map<String, String> conditions = new HashMap<>(0);
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * Evaluates and processes content based on the data specified when the
+     * {@link ContentEvaluator} class is instantiated. In the content evaluation
+     * process, the content data to be returned is filtered based on the input data
+     * passed when the instance of this class is created. The filtered content data
+     * will be returned as an object of {@link List} structure. {@code null} will
+     * never be returned.
+     *
+     * <p>
+     *
+     *
+     * @return The filtered content list
+     *
+     * @exception PreconditionFailedException If {@code content} is {@code null} or
+     *                                        empty, or if {@code attributes} is
+     *                                        {@code null} or empty
+     * @exception NullPointerException        If {@code conditions} is {@code null}
+     */
     @Override
     public List<Map<String, String>> evaluate() {
-        Preconditions.requireNonEmpty(this.content);
-        Preconditions.requireNonEmpty(this.attributes);
-        Preconditions.requireNonNull(this.conditions);
+        Preconditions.requireNonEmpty(this.content,
+                String.format("The content map must not be null or empty. The content map = %s", this.content));
+        Preconditions.requireNonEmpty(this.attributes,
+                String.format("The attribute set must not be null or empty. The attribute set = %s", this.attributes));
+        Preconditions.requireNonNull(this.conditions, "The condition map must not be null.");
 
         final List<Map<String, Object>> conditionNodes = ContentNodeResolver.getNodeList(this.content,
                 ConditionNodeKey.CONDITION_NODES);

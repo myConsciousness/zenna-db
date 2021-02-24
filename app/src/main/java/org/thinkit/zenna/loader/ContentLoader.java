@@ -78,7 +78,7 @@ public final class ContentLoader implements Loader {
      */
     @Override
     public Map<String, Object> load() {
-        Preconditions.requireNonNull(this.contentStream);
+        Preconditions.requireNonNull(this.contentStream, "The content stream must not be null.");
         return this.getContent(this.contentStream);
     }
 
