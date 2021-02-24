@@ -14,7 +14,6 @@
 
 package org.thinkit.zenna.eval;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +25,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.thinkit.common.base.precondition.Preconditions;
 import org.thinkit.common.base.precondition.exception.PreconditionFailedException;
+import org.thinkit.zenna.exception.IllegalContentStateException;
 import org.thinkit.zenna.key.ConditionNodeKey;
 import org.thinkit.zenna.key.SelectionNodeKey;
 import org.thinkit.zenna.util.ContentNodeResolver;
@@ -123,7 +123,10 @@ public final class ContentEvaluator implements Evaluator {
      * never be returned.
      *
      * <p>
-     *
+     * If the content map specified when instantiating the {@link ContentEvaluator}
+     * class is {@code null} or an empty map, or if the attribute set is
+     * {@code null} or an empty set, or if the condition map is {@code null}, an
+     * exception will always be raised at runtime and processing will fail.
      *
      * @return The filtered content list
      *
@@ -134,105 +137,76 @@ public final class ContentEvaluator implements Evaluator {
      */
     @Override
     public List<Map<String, String>> evaluate() {
+        this.checkPreconditions();
+        return this.filterContent(this.content, this.attributes, this.getConditionIds(this.conditions));
+    }
+
+    private void checkPreconditions() {
         Preconditions.requireNonEmpty(this.content,
                 String.format("The content map must not be null or empty. The content map = %s", this.content));
         Preconditions.requireNonEmpty(this.attributes,
                 String.format("The attribute set must not be null or empty. The attribute set = %s", this.attributes));
         Preconditions.requireNonNull(this.conditions, "The condition map must not be null.");
-
-        final List<Map<String, Object>> conditionNodes = ContentNodeResolver.getNodeList(this.content,
-                ConditionNodeKey.CONDITION_NODES);
-
-        final List<String> conditionIdList = conditionNodes.isEmpty() ? new ArrayList<>(0)
-                : this.getConditionIdList(conditionNodes, conditions);
-
-        return this.getContentList(this.content, conditionIdList);
+        Preconditions.requireNonEmpty(this.getSelectionNodes(), new IllegalContentStateException(String.format(
+                "Failed to detect the selected node from the content file. At least one set of selections must be defined. The content = %s",
+                this.content)));
     }
 
-    /**
-     * Returns the content list based on the information passed as arguments.
-     *
-     * <p>
-     * A record with a condition ID in the content definition will be fetched only
-     * if it matches the condition defined in the content. If there is no condition
-     * ID in the content definition, the record will be fetched unconditionally.
-     *
-     * @param attributes      The list of keys associated to the values to be
-     *                        fetched from the content
-     * @param rawContent      The unprocessed content objects
-     * @param conditionIdList A list containing the condition ID to be fetched
-     * @return The content list
-     *
-     * @exception NullPointerException If {@code null} is passed as an argument
-     */
-    private List<Map<String, String>> getContentList(@NonNull Map<String, Object> rawContent,
-            @NonNull List<String> conditionIdList) {
+    private List<Map<String, Object>> getSelectionNodes() {
+        return ContentNodeResolver.getNodeList(this.content, SelectionNodeKey.SELECTION_NODES);
+    }
 
-        final List<Map<String, String>> contentList = new ArrayList<>(0);
-        final List<Map<String, Object>> selectionNodes = ContentNodeResolver.getNodeList(rawContent,
-                SelectionNodeKey.SELECTION_NODES);
+    private List<Map<String, Object>> getConditionNodes() {
+        return ContentNodeResolver.getNodeList(this.content, ConditionNodeKey.CONDITION_NODES);
+    }
 
-        for (Map<String, Object> nodeList : selectionNodes) {
-            final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(nodeList, SelectionNodeKey.NODE);
-            final String conditionId = ContentNodeResolver.getString(nodeMap, SelectionNodeKey.CONDITION_ID);
+    private List<String> getConditionIds(@NonNull Map<String, String> conditions) {
 
-            if (!StringUtils.isEmpty(conditionId) && !conditionIdList.contains(conditionId)) {
-                continue;
-            }
+        final List<Map<String, Object>> conditionNodes = this.getConditionNodes();
 
-            final Map<String, String> content = new HashMap<>(0);
-
-            for (String attribute : attributes) {
-                content.put(attribute, ContentNodeResolver.getString(nodeMap, attribute));
-            }
-
-            contentList.add(content);
+        if (conditionNodes.isEmpty()) {
+            return new ArrayList<>(0);
         }
 
-        return contentList;
-    }
-
-    /**
-     * Gets the condition ID used to load the content and returns it as a list.
-     *
-     * @param conditionNodes The list containing the conditional nodes
-     * @param conditions     The conditional map to use when matching conditions
-     * @return The List of condition IDs obtained as a result of matching
-     *
-     * @exception NullPointerException If {@code null} is passed as an argument
-     */
-    private List<String> getConditionIdList(@NonNull List<Map<String, Object>> conditionNodes,
-            @NonNull Map<String, String> conditions) {
-
-        final List<String> conditionIdList = new ArrayList<>(0);
+        final List<String> conditionIds = new ArrayList<>();
 
         conditionNodes.forEach(nodeList -> {
-
             final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(nodeList, ConditionNodeKey.NODE);
-            final List<Map<String, Object>> conditionList = ContentNodeResolver.getNodeList(nodeMap,
+            final List<Map<String, Object>> conditionsNode = ContentNodeResolver.getNodeList(nodeMap,
                     ConditionNodeKey.CONDITIONS);
 
-            if (this.all(conditionList, conditions)) {
-                conditionIdList.add(ContentNodeResolver.getString(nodeMap, ConditionNodeKey.CONDITION_ID));
+            if (this.all(conditionsNode, conditions)) {
+                conditionIds.add(ContentNodeResolver.getString(nodeMap, ConditionNodeKey.CONDITION_ID));
             }
         });
 
-        return conditionIdList;
-
+        return conditionIds;
     }
 
-    /**
-     * Tests the conditions defined in the content against those passed to
-     * {@link #load(InputStream, Set, List)} and determine if all conditions are
-     * met.
-     *
-     * @param contentConditionList The List of conditions defined in the content
-     * @param conditions           The conditional map to use when matching
-     *                             conditions
-     * @return If all conditions are met {@code true} , otherwise {@code false}
-     *
-     * @exception NullPointerException If {@code null} is passed as an argument
-     */
+    private List<Map<String, String>> filterContent(@NonNull Map<String, Object> rawContent,
+            @NonNull Set<String> attributes, @NonNull List<String> conditionIds) {
+
+        final List<Map<String, String>> filtredContent = new ArrayList<>();
+        final int attributeCount = attributes.size();
+
+        this.getSelectionNodes().forEach(selectionNode -> {
+            final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(selectionNode, SelectionNodeKey.NODE);
+            final String conditionId = ContentNodeResolver.getString(nodeMap, SelectionNodeKey.CONDITION_ID);
+
+            if (StringUtils.isEmpty(conditionId) || conditionIds.contains(conditionId)) {
+                final Map<String, String> content = new HashMap<>(attributeCount);
+
+                attributes.forEach(attribute -> {
+                    content.put(attribute, ContentNodeResolver.getString(nodeMap, attribute));
+                });
+
+                filtredContent.add(content);
+            }
+        });
+
+        return filtredContent;
+    }
+
     private boolean all(@NonNull List<Map<String, Object>> contentConditionList,
             @NonNull Map<String, String> conditions) {
 
