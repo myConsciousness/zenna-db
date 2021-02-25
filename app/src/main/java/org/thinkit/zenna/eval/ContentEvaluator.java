@@ -147,9 +147,6 @@ public final class ContentEvaluator implements Evaluator {
         Preconditions.requireNonEmpty(this.attributes,
                 String.format("The attribute set must not be null or empty. The attribute set = %s", this.attributes));
         Preconditions.requireNonNull(this.conditions, "The condition map must not be null.");
-        Preconditions.requireNonEmpty(this.getSelectionNodes(), new IllegalContentStateException(String.format(
-                "Failed to detect the selected node from the content file. At least one set of selections must be defined. The content = %s",
-                this.content)));
     }
 
     private List<Map<String, Object>> getSelectionNodes() {
@@ -186,10 +183,15 @@ public final class ContentEvaluator implements Evaluator {
     private List<Map<String, String>> filterContent(@NonNull Map<String, Object> rawContent,
             @NonNull Set<String> attributes, @NonNull List<String> conditionIds) {
 
+        final List<Map<String, Object>> selectionNodes = this.getSelectionNodes();
+        Preconditions.requireNonEmpty(selectionNodes, new IllegalContentStateException(String.format(
+                "Failed to detect the selection node from the content file. At least one set of selections must be defined. The content = %s",
+                this.content)));
+
         final List<Map<String, String>> filtredContent = new ArrayList<>();
         final int attributeCount = attributes.size();
 
-        this.getSelectionNodes().forEach(selectionNode -> {
+        selectionNodes.forEach(selectionNode -> {
             final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(selectionNode, SelectionNodeKey.NODE);
             final String conditionId = ContentNodeResolver.getString(nodeMap, SelectionNodeKey.CONDITION_ID);
 
