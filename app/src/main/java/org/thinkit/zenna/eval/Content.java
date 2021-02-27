@@ -16,27 +16,19 @@ package org.thinkit.zenna.eval;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.thinkit.common.base.precondition.Preconditions;
-import org.thinkit.zenna.exception.IllegalContentStateException;
-import org.thinkit.zenna.key.ConditionNodeKey;
-import org.thinkit.zenna.key.SelectionNodeKey;
-import org.thinkit.zenna.util.ContentNodeResolver;
-
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(staticName = "from")
 final class Content implements Serializable {
 
     /**
@@ -45,55 +37,36 @@ final class Content implements Serializable {
     private static final long serialVersionUID = 1426571977335812321L;
 
     /**
-     * The content map
+     * The content selection nodes
      */
-    private Map<String, Object> content;
+    private ContentSelection contentSelection;
 
     /**
-     * The attributes of content
+     * The content condition nodes
      */
-    private Set<String> attributes;
+    private ContentCondition contentCondition;
 
-    /**
-     * The conditions of content
-     */
-    private Map<String, String> conditions;
+    private Content(@NonNull Map<String, Object> content, @NonNull Set<String> attributes,
+            @NonNull Map<String, String> conditions) {
+        this.contentSelection = ContentSelection.from(content, attributes);
+        this.contentCondition = ContentCondition.from(content, conditions);
+    }
+
+    protected static Content from(@NonNull Map<String, Object> content, @NonNull Set<String> attributes,
+            @NonNull Map<String, String> conditions) {
+        return new Content(content, attributes, conditions);
+    }
 
     protected List<Map<String, String>> filter() {
 
-        final ContentCondition contentCondition = ContentCondition.from(conditions, this.getConditionNodes());
-
-        final List<Map<String, Object>> selectionNodes = this.getSelectionNodes();
-        Preconditions.requireNonEmpty(selectionNodes, new IllegalContentStateException(String.format(
-                "Failed to detect the selection node from the content file. At least one set of selections must be defined. The content = %s",
-                this.content)));
-
         final List<Map<String, String>> filtredContent = new ArrayList<>();
-        final int attributeCount = attributes.size();
 
-        selectionNodes.forEach(selectionNode -> {
-            final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(selectionNode, SelectionNodeKey.NODE);
-            final String conditionId = ContentNodeResolver.getString(nodeMap, SelectionNodeKey.CONDITION_ID);
-
-            if (contentCondition.isSelectable(conditionId)) {
-                final Map<String, String> content = new HashMap<>(attributeCount);
-
-                attributes.forEach(attribute -> {
-                    content.put(attribute, ContentNodeResolver.getString(nodeMap, attribute));
-                });
-
-                filtredContent.add(content);
+        while (this.contentSelection.hasNext()) {
+            if (this.contentSelection.isSelectable(this.contentCondition)) {
+                filtredContent.add(this.contentSelection.getSelection());
             }
-        });
+        }
 
         return filtredContent;
-    }
-
-    private List<Map<String, Object>> getSelectionNodes() {
-        return ContentNodeResolver.getNodeList(this.content, SelectionNodeKey.SELECTION_NODES);
-    }
-
-    private List<Map<String, Object>> getConditionNodes() {
-        return ContentNodeResolver.getNodeList(this.content, ConditionNodeKey.CONDITION_NODES);
     }
 }

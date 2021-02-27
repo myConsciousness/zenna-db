@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.thinkit.zenna.key.ConditionNodeKey;
 import org.thinkit.zenna.util.ContentNodeResolver;
 
@@ -47,8 +46,9 @@ final class ContentCondition implements Serializable {
      */
     private List<String> conditionIds;
 
-    private ContentCondition(@NonNull Map<String, String> conditions,
-            @NonNull List<Map<String, Object>> conditionNodes) {
+    private ContentCondition(@NonNull Map<String, Object> content, @NonNull Map<String, String> conditions) {
+
+        final List<Map<String, Object>> conditionNodes = this.getConditionNodes(content);
 
         if (conditionNodes.isEmpty()) {
             this.conditionIds = new ArrayList<>(0);
@@ -69,13 +69,17 @@ final class ContentCondition implements Serializable {
         this.conditionIds = conditionIds;
     }
 
-    protected static ContentCondition from(@NonNull Map<String, String> conditions,
-            @NonNull List<Map<String, Object>> conditionNodes) {
-        return new ContentCondition(conditions, conditionNodes);
+    protected static ContentCondition from(@NonNull Map<String, Object> content,
+            @NonNull Map<String, String> conditions) {
+        return new ContentCondition(content, conditions);
     }
 
-    protected boolean isSelectable(@NonNull final String conditionId) {
-        return StringUtils.isEmpty(conditionId) || conditionIds.contains(conditionId);
+    protected boolean isSatisfied(@NonNull final String conditionId) {
+        return conditionIds.contains(conditionId);
+    }
+
+    private List<Map<String, Object>> getConditionNodes(@NonNull Map<String, Object> content) {
+        return ContentNodeResolver.getNodeList(content, ConditionNodeKey.CONDITION_NODES);
     }
 
     private boolean isConditionSatisfied(@NonNull List<Map<String, Object>> conditionNodes,
