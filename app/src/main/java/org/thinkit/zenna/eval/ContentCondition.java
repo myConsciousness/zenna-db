@@ -15,23 +15,85 @@
 package org.thinkit.zenna.eval;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.thinkit.zenna.key.ConditionNodeKey;
+import org.thinkit.zenna.util.ContentNodeResolver;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ContentCondition implements Serializable {
+final class ContentCondition implements Serializable {
 
     /**
      * The serial version UID
      */
     private static final long serialVersionUID = 8564840008830796135L;
 
+    /**
+     * The list of satisfied condition ids
+     */
     private List<String> conditionIds;
 
+    private ContentCondition(@NonNull Map<String, String> conditions,
+            @NonNull List<Map<String, Object>> conditionNodes) {
+
+        if (conditionNodes.isEmpty()) {
+            this.conditionIds = new ArrayList<>(0);
+        }
+
+        final List<String> conditionIds = new ArrayList<>();
+
+        for (final Map<String, Object> conditionNode : conditionNodes) {
+            final Map<String, Object> nodeMap = ContentNodeResolver.getNodeMap(conditionNode, ConditionNodeKey.NODE);
+            final List<Map<String, Object>> conditionsNode = ContentNodeResolver.getNodeList(nodeMap,
+                    ConditionNodeKey.CONDITIONS);
+
+            if (this.isConditionSatisfied(conditionsNode, conditions)) {
+                conditionIds.add(ContentNodeResolver.getString(nodeMap, ConditionNodeKey.CONDITION_ID));
+            }
+        }
+
+        this.conditionIds = conditionIds;
+    }
+
+    protected static ContentCondition from(@NonNull Map<String, String> conditions,
+            @NonNull List<Map<String, Object>> conditionNodes) {
+        return new ContentCondition(conditions, conditionNodes);
+    }
+
+    protected boolean isSelectable(@NonNull final String conditionId) {
+        return StringUtils.isEmpty(conditionId) || conditionIds.contains(conditionId);
+    }
+
+    private boolean isConditionSatisfied(@NonNull List<Map<String, Object>> conditionNodes,
+            @NonNull Map<String, String> conditions) {
+
+        final Set<Entry<String, String>> entrySet = conditions.entrySet();
+
+        for (final Map<String, Object> conditionNode : conditionNodes) {
+            final String keyName = ContentNodeResolver.getString(conditionNode, ConditionNodeKey.KEY_NAME);
+            final String value = ContentNodeResolver.getString(conditionNode, ConditionNodeKey.OPERAND);
+
+            for (final Entry<String, String> entry : entrySet) {
+                if (Objects.equals(keyName, entry.getKey()) && !Objects.equals(value, entry.getValue())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
