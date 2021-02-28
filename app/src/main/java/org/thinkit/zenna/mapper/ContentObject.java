@@ -65,6 +65,11 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private Class<?> contentObject;
 
     /**
+     * The property of content
+     */
+    private ContentProperty contentProperty;
+
+    /**
      * The constructor
      *
      * @param contentMapper The content mapper object
@@ -73,6 +78,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      */
     private ContentObject(@NonNull final Mapper<T> contentMapper) {
         this.contentObject = contentMapper.getClass();
+        this.contentProperty = ContentProperty.from(contentObject);
     }
 
     /**
@@ -190,8 +196,8 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
 
         final String className = this.getSimpleName();
 
-        if (className.endsWith(MapperSuffix.MAPPER.getTag())) {
-            return this.getFullContentName(className.substring(0, className.indexOf(MapperSuffix.MAPPER.getTag())));
+        if (this.isEndWithMapperSuffix()) {
+            return this.getFullContentName(className.substring(0, className.indexOf(MapperSuffix.DEFAULT.getTag())));
         }
 
         return this.getFullContentName(className);
@@ -216,13 +222,17 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
 
     private String getFullContentName(@NonNull String contentName) {
 
-        final ContentProperty contentProperty = ContentProperty.from(this.contentObject);
-
         final StringBuilder fullContentName = new StringBuilder();
-        fullContentName.append(contentProperty.getContentPackage());
+        fullContentName.append(this.contentProperty.getContentPackage());
         fullContentName.append(contentName);
 
         return fullContentName.toString();
+    }
+
+    private boolean isEndWithMapperSuffix() {
+        final String className = this.getSimpleName();
+        return className.endsWith(MapperSuffix.DEFAULT.getTag())
+                || className.endsWith(this.contentProperty.getMapperSuffix());
     }
 
     private String getConditionKey(@NonNull final Field field) {

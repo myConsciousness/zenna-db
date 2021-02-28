@@ -35,7 +35,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(staticName = "from")
-final class ContentPackage implements Serializable {
+final class ContentPackage implements Property, Serializable {
 
     /**
      * The serial version UID
@@ -53,6 +53,9 @@ final class ContentPackage implements Serializable {
     private String packageName;
 
     /**
+     * {@inheritDoc}
+     *
+     * <p>
      * Parse the package name of the content defined in the content property file
      * {@code "content.properties"} and make the minimum necessary corrections. The
      * correction determines whether or not a slash exists before or after the
@@ -66,7 +69,8 @@ final class ContentPackage implements Serializable {
      *
      * @return The content package name
      */
-    public String getPackage() {
+    @Override
+    public String getProperty() {
 
         if (StringUtils.isEmpty(this.packageName)) {
             return "";

@@ -91,19 +91,32 @@ public final class ContentProperty {
     }
 
     public String getContentPackage() {
-        return ContentPackage.from(this.getProperty(ContentPropertyKey.CONTENT_PACKAGE)).getPackage();
+        return ContentPackage.from(this.getProperty(ContentPropertyKey.CONTENT_PACKAGE)).getProperty();
+    }
+
+    public String getMapperSuffix() {
+        return MapperSuffix.from(this.getProperty(ContentPropertyKey.MAPPER_SUFFIX)).getProperty();
     }
 
     /**
      * Searches for the property with the specified key in this property list. If
      * the key is not found in this property list, the default property list, and
-     * its defaults, recursively, are then checked. The method returns {@code null}
-     * if the property is not found.
+     * its defaults, recursively, are then checked. The method returns empty string
+     * {@code ""} if the property is not found.
      *
      * @param key The property key
      * @return The value in this property list with the specified key value
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
      */
     private String getProperty(@NonNull final ContentPropertyKey key) {
-        return this.properties.getProperty(key.getTag());
+
+        final String propertyValue = this.properties.getProperty(key.getTag());
+
+        if (propertyValue == null) {
+            return "";
+        }
+
+        return propertyValue;
     }
 }

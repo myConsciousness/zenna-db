@@ -29,9 +29,9 @@ import lombok.RequiredArgsConstructor;
 public enum MapperSuffix implements BiCatalog<MapperSuffix, String> {
 
     /**
-     * The suffix value
+     * The default suffix
      */
-    MAPPER(0, "Mapper");
+    DEFAULT(0, "Mapper");
 
     /**
      * The code

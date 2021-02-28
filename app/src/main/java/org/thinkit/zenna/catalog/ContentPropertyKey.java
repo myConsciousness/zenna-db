@@ -31,7 +31,12 @@ public enum ContentPropertyKey implements BiCatalog<ContentPropertyKey, String> 
     /**
      * {@code "contentPackage="}
      */
-    CONTENT_PACKAGE(0, "contentPackage");
+    CONTENT_PACKAGE(0, "contentPackage"),
+
+    /**
+     * {@code "mapperSuffix"}
+     */
+    MAPPER_SUFFIX(1, "mapperSuffix");
 
     /**
      * The code
