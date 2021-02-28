@@ -35,6 +35,7 @@ public @interface Attribute {
     /**
      * Specify the field in the content class that you want to tie to the attribute
      * defined in the content file.
+     *
      * <p>
      * If a specific attribute name is not specified when this annotation is given
      * to a field in the content class, the annotated field name is inferred as the

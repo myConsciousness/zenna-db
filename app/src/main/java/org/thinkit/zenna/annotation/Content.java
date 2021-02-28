@@ -35,11 +35,13 @@ public @interface Content {
     /**
      * Specify the name of the content file to be mapped. The file extension is not
      * required when specifying the content file name.
+     *
      * <p>
      * When mapping content, inferences can be made from content class names and
      * content file names. Therefore if the class name of the content class to which
      * this annotation is assigned starts with the content file name, there is no
      * need to set this field.
+     *
      * <p>
      * Even if only a content name is specified instead of a path, it will search
      * under the resources folder for content files associated with the specified
