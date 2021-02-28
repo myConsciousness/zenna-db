@@ -31,6 +31,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+/**
+ *
+ * @author Kato Shinya
+ * @since 1.0.0
+ */
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

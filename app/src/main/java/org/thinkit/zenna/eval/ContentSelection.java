@@ -33,6 +33,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+/**
+ *
+ * @author Kato Shinya
+ * @since 1.0.0
+ */
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -86,9 +91,7 @@ public final class ContentSelection implements Iterator<ContentSelection>, Seria
     @Override
     public boolean hasNext() {
 
-        final boolean hasNext = this.iterator.hasNext();
-
-        if (!hasNext) {
+        if (!this.iterator.hasNext()) {
             return false;
         }
 
