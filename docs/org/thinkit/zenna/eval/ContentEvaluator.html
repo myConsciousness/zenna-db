@@ -87,8 +87,51 @@ loadScripts(document, 'script');</script>
 <pre>public final class <span class="type-name-label">ContentEvaluator</span>
 extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Object.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Object</a>
 implements <a href="Evaluator.html" title="org.thinkit.zenna.eval内のインタフェース">Evaluator</a></pre>
-<div class="block">This class defines the process of evaluating the specified arbitrary
- conditions and the conditions defined in the content file.</div>
+<div class="block">The class that defines the process of evaluating the defined content based on
+ the given inputs.
+
+ <p>
+ The builder pattern is used as the process when creating an instance of this
+ class. When creating an instance of this class, first call the
+ <a href="#builder()"><code>builder()</code></a> method. The <a href="#builder()"><code>builder()</code></a> method returns an instance
+ of itself, subsequent processing can be described in the form of a method
+ chain. And you can create a new instance of the <a href="ContentEvaluator.html" title="org.thinkit.zenna.eval内のクラス"><code>ContentEvaluator</code></a>
+ class by setting the required and optional fields after calling the
+ <a href="#builder()"><code>builder()</code></a> method, and then calling the
+ <a href="ContentEvaluator.ContentEvaluatorBuilder.html#build()"><code>ContentEvaluator.ContentEvaluatorBuilder.build()</code></a> method.
+
+ <p>
+ The required inputs for creating an instance of this class and performing
+ subsequent processing successfully are an object in the <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Map</code></a> structure
+ that stores content information and an object in the <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Set.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Set</code></a> structure
+ that stores the key names defined under the <code>"selectionNodes"</code> of the
+ content. The condition to get the content item can be specified by an object
+ of <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Map</code></a> structure, but specifying this condition is optional and not
+ required. If no content acquisition condition is specified, all items under
+ <code>"selectionNodes"</code> in the content file whose <code>"conditionId"</code> is
+ empty will be acquired.
+
+ <p>
+ To set the <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Map</code></a> object representing the content, call the
+ <a href="ContentEvaluator.ContentEvaluatorBuilder.html#content(java.util.Map)"><code>ContentEvaluator.ContentEvaluatorBuilder.content(Map)</code></a> method, and to set the
+ <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Set.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Set</code></a> object representing the key name of the item to be retrieved,
+ call the <a href="ContentEvaluator.ContentEvaluatorBuilder.html#attributes(java.util.Set)"><code>ContentEvaluator.ContentEvaluatorBuilder.attributes(Set)</code></a> method. To set a
+ <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Map</code></a> object that represents the conditions of an arbitrary item, call
+ <a href="ContentEvaluator.ContentEvaluatorBuilder.html#conditions(java.util.Map)"><code>ContentEvaluator.ContentEvaluatorBuilder.conditions(Map)</code></a> to set it. After setting the
+ data required for the evaluation process, call the
+ <a href="ContentEvaluator.ContentEvaluatorBuilder.html#build()"><code>ContentEvaluator.ContentEvaluatorBuilder.build()</code></a> method and execute the
+ <a href="#evaluate()"><code>evaluate()</code></a> method. The content data evaluated based on the specified
+ input will be returned as an object of <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/List.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>List</code></a> structure.
+
+ <p>
+ The required field must be an object that is not <code>null</code> and is not
+ empty in the case of a collection. The initial value of the condition object,
+ which is an optional item, is an empty <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>Map</code></a> object, and <code>null</code>
+ is not allowed. If the above values are set at the time of instance creation,
+ no exception will be thrown when executing the
+ <a href="ContentEvaluator.ContentEvaluatorBuilder.html#build()"><code>ContentEvaluator.ContentEvaluatorBuilder.build()</code></a> method, but an exception will always
+ be thrown when checking the preconditions when executing the
+ <a href="#evaluate()"><code>evaluate()</code></a> method.</div>
 <dl class="notes">
 <dt>導入されたバージョン:</dt>
 <dd>1.0.0</dd>
@@ -191,13 +234,31 @@ implements <a href="Evaluator.html" title="org.thinkit.zenna.eval内のインタ
 <section class="detail" id="evaluate()">
 <h3>evaluate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/List.html" title="java.util内のクラスまたはインタフェース" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>,&#8203;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>&gt;&gt;</span>&nbsp;<span class="member-name">evaluate</span>()</div>
-<div class="block"><span class="descfrm-type-label">インタフェースからコピーされた説明:&nbsp;<code><a href="Evaluator.html#evaluate()">Evaluator</a></code></span></div>
-<div class="block">Evaluate and return the obtained object as a list structure.</div>
+<div class="block">Evaluate and return the obtained object as a list structure.
+
+ <p>
+ Evaluates and processes content based on the data specified when the
+ <a href="ContentEvaluator.html" title="org.thinkit.zenna.eval内のクラス"><code>ContentEvaluator</code></a> class is instantiated. In the content evaluation
+ process, the content data to be returned is filtered based on the input data
+ passed when the instance of this class is created. The filtered content data
+ will be returned as an object of <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/List.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>List</code></a> structure. <code>null</code> will
+ never be returned.
+
+ <p>
+ If the content map specified when instantiating the <a href="ContentEvaluator.html" title="org.thinkit.zenna.eval内のクラス"><code>ContentEvaluator</code></a>
+ class is <code>null</code> or an empty map, or if the attribute set is
+ <code>null</code> or an empty set, or if the condition map is <code>null</code>, an
+ exception will always be raised at runtime and processing will fail.</div>
 <dl class="notes">
 <dt>定義:</dt>
 <dd><code><a href="Evaluator.html#evaluate()">evaluate</a></code>&nbsp;インタフェース内&nbsp;<code><a href="Evaluator.html" title="org.thinkit.zenna.eval内のインタフェース">Evaluator</a></code></dd>
 <dt>戻り値:</dt>
-<dd>The object obtained by the evaluation process</dd>
+<dd>The filtered content list</dd>
+<dt>例外:</dt>
+<dd><code>org.thinkit.common.base.precondition.exception.PreconditionFailedException</code> - If <code>content</code> is <code>null</code> or
+                                        empty, or if <code>attributes</code> is
+                                        <code>null</code> or empty</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/NullPointerException.html" title="java.lang内のクラスまたはインタフェース" class="external-link">NullPointerException</a></code> - If <code>conditions</code> is <code>null</code></dd>
 </dl>
 </section>
 </li>

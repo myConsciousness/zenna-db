@@ -15,7 +15,7 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var data = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10};
+<script type="text/javascript">var data = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","\u3059\u3079\u3066\u306E\u30E1\u30BD\u30C3\u30C9"],1:["t1","static\u30E1\u30BD\u30C3\u30C9"],2:["t2","\u30A4\u30F3\u30B9\u30BF\u30F3\u30B9\u30FB\u30E1\u30BD\u30C3\u30C9"],8:["t4","concrete\u30E1\u30BD\u30C3\u30C9"]};
 var altColor = "alt-color";
 var rowColor = "row-color";
@@ -120,24 +120,33 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 </tr>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getProperty(org.thinkit.zenna.catalog.ContentPropertyKey)">getProperty</a></span>&#8203;(@NonNull <a href="../catalog/ContentPropertyKey.html" title="org.thinkit.zenna.catalog内の列挙型">ContentPropertyKey</a>&nbsp;key)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getContentPackage()">getContentPackage</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Searches for the property with the specified key in this property list.</div>
+<div class="block">Retrieves the content package name from the property file and returns it as a
+ string.</div>
 </td>
 </tr>
 <tr class="row-color" id="i3">
+<td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></code></td>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#getMapperSuffix()">getMapperSuffix</a></span>()</code></th>
+<td class="col-last">
+<div class="block">Retrieves the mapper suffix name from the property file and returns it as a
+ string.</div>
+</td>
+</tr>
+<tr class="alt-color" id="i4">
 <td class="col-first"><code>int</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="col-last">&nbsp;</td>
 </tr>
-<tr class="alt-color" id="i4">
+<tr class="row-color" id="i5">
 <td class="col-first"><code>boolean</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isExist()">isExist</a></span>()</code></th>
 <td class="col-last">
 <div class="block">Test for the existence of content property files.</div>
 </td>
 </tr>
-<tr class="row-color" id="i5">
+<tr class="alt-color" id="i6">
 <td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#toString()">toString</a></span>()</code></th>
 <td class="col-last">&nbsp;</td>
@@ -189,19 +198,28 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 </section>
 </li>
 <li>
-<section class="detail" id="getProperty(org.thinkit.zenna.catalog.ContentPropertyKey)">
-<h3>getProperty</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">getProperty</span>&#8203;(<span class="parameters">@NonNull
-@NonNull <a href="../catalog/ContentPropertyKey.html" title="org.thinkit.zenna.catalog内の列挙型">ContentPropertyKey</a>&nbsp;key)</span></div>
-<div class="block">Searches for the property with the specified key in this property list. If
- the key is not found in this property list, the default property list, and
- its defaults, recursively, are then checked. The method returns <code>null</code>
- if the property is not found.</div>
+<section class="detail" id="getContentPackage()">
+<h3>getContentPackage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">getContentPackage</span>()</div>
+<div class="block">Retrieves the content package name from the property file and returns it as a
+ string. If <code>"contentPackage"</code> is not set in the property file, an empty
+ string will be returned.</div>
 <dl class="notes">
-<dt>パラメータ:</dt>
-<dd><code>key</code> - The property key</dd>
 <dt>戻り値:</dt>
-<dd>The value in this property list with the specified key value</dd>
+<dd>The content package name set in the property file</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMapperSuffix()">
+<h3>getMapperSuffix</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">getMapperSuffix</span>()</div>
+<div class="block">Retrieves the mapper suffix name from the property file and returns it as a
+ string. If <code>"mapperSuffix"</code> is not set in the property file, an empty
+ string will be returned.</div>
+<dl class="notes">
+<dt>戻り値:</dt>
+<dd>The mapper suffix name set in the property file</dd>
 </dl>
 </section>
 </li>

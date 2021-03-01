@@ -87,17 +87,25 @@ loadScripts(document, 'script');</script>
 <pre>public final class <span class="type-name-label">ContentLoader</span>
 extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Object.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Object</a>
 implements <a href="Loader.html" title="org.thinkit.zenna.loader内のインタフェース">Loader</a></pre>
-<div class="block">The class that defines the process of loading the content data based on the
- specified content definition.
+<div class="block">The class that defines the content loading process.
+
  <p>
- It provides a <code>#load(InputStream, Set)</code> method to load content data
- without conditions, and a <code>#load(InputStream, Set, List)</code> method to
- load content data with conditions.
+ In order to create an instance of this <a href="ContentLoader.html" title="org.thinkit.zenna.loader内のクラス"><code>ContentLoader</code></a> class, use the
+ <a href="#from(java.io.InputStream)"><code>from(InputStream)</code></a> method and pass the input stream object of the
+ content resource as an initialization argument. Even if the input stream
+ object of the content for initialization is <code>null</code> , no exception will
+ be thrown when executing the constructor process, but a
+ <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/NullPointerException.html" title="java.lang内のクラスまたはインタフェース" class="external-link"><code>NullPointerException</code></a> will be thrown when executing the <a href="#load()"><code>load()</code></a>
+ method. For this reason, be sure to pass a content input stream object that
+ is not <code>null</code> in order for the content loading process to be
+ successful.
+
  <p>
- If the value of <code>"conditionId"</code> defined in the content is an empty
- string, the record will be loaded unconditionally. If you have defined a
- value for the conditionId of the content, be sure to define a condition for
- the content and call <code>#load(InputStream, Set, List)</code>.</div>
+ After creating an instance of the <a href="ContentLoader.html" title="org.thinkit.zenna.loader内のクラス"><code>ContentLoader</code></a> class based on the
+ above points, simply call the <a href="#load()"><code>load()</code></a> method. This method parses the
+ content input stream object passed when creating an instance of the
+ <a href="ContentLoader.html" title="org.thinkit.zenna.loader内のクラス"><code>ContentLoader</code></a> class, converts the content string defined in JSON
+ format into the structure of <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/LinkedHashMap.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>LinkedHashMap</code></a> , and returns it.</div>
 <dl class="notes">
 <dt>導入されたバージョン:</dt>
 <dd>1.0.0</dd>
@@ -140,8 +148,7 @@ implements <a href="Loader.html" title="org.thinkit.zenna.loader内のインタ�
 <td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>,&#8203;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Object.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Object</a>&gt;</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#load()">load</a></span>()</code></th>
 <td class="col-last">
-<div class="block">Gets each element defined in the content file specified and return it as a
- list.</div>
+<div class="block">Load and return the obtained object as a map structure.</div>
 </td>
 </tr>
 <tr class="alt-color" id="i4">
@@ -171,29 +178,19 @@ implements <a href="Loader.html" title="org.thinkit.zenna.loader内のインタ�
 <section class="detail" id="load()">
 <h3>load</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/Map.html" title="java.util内のクラスまたはインタフェース" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>,&#8203;<a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Object.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Object</a>&gt;</span>&nbsp;<span class="member-name">load</span>()</div>
-<div class="block">Gets each element defined in the content file specified and return it as a
- list.
- <p>
- Use this <code>ContentLoader#load(InputStream, Set, List)</code> method if there
- are no acquisition conditions in the content definition.
+<div class="block">Load and return the obtained object as a map structure.
 
- <pre>
- Get the content data with conditions:
- <code>List&lt;Map&lt;String, String&gt;&gt; contents = ContentLoader.load(contentStream, attributes, conditions);</code>
- </pre></div>
+ <p>
+ Performs the content loading process based on the content input stream
+ specified when creating an instance of this class. The loaded content will be
+ formatted and returned in the format <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/util/LinkedHashMap.html" title="java.util内のクラスまたはインタフェース" class="external-link"><code>LinkedHashMap</code></a> .</div>
 <dl class="notes">
 <dt>定義:</dt>
 <dd><code><a href="Loader.html#load()">load</a></code>&nbsp;インタフェース内&nbsp;<code><a href="Loader.html" title="org.thinkit.zenna.loader内のインタフェース">Loader</a></code></dd>
-<dt>パラメータ:</dt>
-<dd><code>contentStream</code> - The stream of content file</dd>
-<dd><code>attributes</code> - The Attribute names to be acquired</dd>
-<dd><code>conditions</code> - The conditional list to use when getting data from the
-                      content file</dd>
 <dt>戻り値:</dt>
-<dd>The List containing the elements retrieved from the content file</dd>
+<dd>The loaded content</dd>
 <dt>例外:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/NullPointerException.html" title="java.lang内のクラスまたはインタフェース" class="external-link">NullPointerException</a></code> - If <code>null</code> is passed as an argument</dd>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/IllegalArgumentException.html" title="java.lang内のクラスまたはインタフェース" class="external-link">IllegalArgumentException</a></code> - If the attribute list is empty</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/NullPointerException.html" title="java.lang内のクラスまたはインタフェース" class="external-link">NullPointerException</a></code> - If the input stream content is <code>null</code></dd>
 </dl>
 </section>
 </li>

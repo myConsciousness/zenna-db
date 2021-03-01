@@ -124,11 +124,13 @@ public @interface <span class="type-name-label">Content</span></pre>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></span>&nbsp;<span class="member-name">value</span></div>
 <div class="block">Specify the name of the content file to be mapped. The file extension is not
  required when specifying the content file name.
+
  <p>
  When mapping content, inferences can be made from content class names and
  content file names. Therefore if the class name of the content class to which
  this annotation is assigned starts with the content file name, there is no
  need to set this field.
+
  <p>
  Even if only a content name is specified instead of a path, it will search
  under the resources folder for content files associated with the specified
