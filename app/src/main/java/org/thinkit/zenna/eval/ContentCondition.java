@@ -32,6 +32,17 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
+ * The class that represents a group of nodes that handle content conditions.
+ *
+ * <p>
+ * This class evaluates the condition specified when the
+ * {@link ContentCondition} class is instantiated and the condition defined in
+ * the content file, and holds the {@code "conditionId"} that satisfies the
+ * condition. Specify an empty collection even if the specified condition is
+ * empty, i.e. when the condition does not exist. {@code null} is not allowed.
+ *
+ * <p>
+ *
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -51,7 +62,54 @@ final class ContentCondition implements Serializable {
      */
     private List<String> conditionIds;
 
+    /**
+     * The constructor.
+     *
+     * <p>
+     * When this constructor process is executed, it evaluates the condition
+     * specified as an argument and the condition defined in the content file, and
+     * extracts the value of {@code "conditionId"} that satisfies the condition.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private ContentCondition(@NonNull Map<String, Object> content, @NonNull Map<String, String> conditions) {
+        this.conditionIds = this.getConditionIds(content, conditions);
+    }
+
+    /**
+     * Returns the new instance of {@link ContentCondition} based on the arguments.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     * @return The new instance of {@link ContentCondition}
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
+    protected static ContentCondition from(@NonNull Map<String, Object> content,
+            @NonNull Map<String, String> conditions) {
+        return new ContentCondition(content, conditions);
+    }
+
+    /**
+     *
+     * @param conditionId
+     * @return
+     */
+    protected boolean isSatisfied(@NonNull final String conditionId) {
+        return conditionIds.contains(conditionId);
+    }
+
+    private List<Map<String, Object>> getConditionNodes(@NonNull Map<String, Object> content) {
+        return ContentNodeResolver.getNodeList(content, ConditionNodeKey.CONDITION_NODES);
+    }
+
+    private List<String> getConditionIds(@NonNull Map<String, Object> content,
+            @NonNull Map<String, String> conditions) {
 
         final List<Map<String, Object>> conditionNodes = this.getConditionNodes(content);
 
@@ -71,20 +129,7 @@ final class ContentCondition implements Serializable {
             }
         }
 
-        this.conditionIds = conditionIds;
-    }
-
-    protected static ContentCondition from(@NonNull Map<String, Object> content,
-            @NonNull Map<String, String> conditions) {
-        return new ContentCondition(content, conditions);
-    }
-
-    protected boolean isSatisfied(@NonNull final String conditionId) {
-        return conditionIds.contains(conditionId);
-    }
-
-    private List<Map<String, Object>> getConditionNodes(@NonNull Map<String, Object> content) {
-        return ContentNodeResolver.getNodeList(content, ConditionNodeKey.CONDITION_NODES);
+        return conditionIds;
     }
 
     private boolean isConditionSatisfied(@NonNull List<Map<String, Object>> conditionNodes,

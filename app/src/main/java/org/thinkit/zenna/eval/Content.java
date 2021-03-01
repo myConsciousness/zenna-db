@@ -27,6 +27,12 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
+ * The class that represents the content to be evaluated.
+ *
+ * <p>
+ * This class maps each item defined in the content file based on the attributes
+ * and conditions specified when the {@link Content} class is instantiated, and
+ * has a {@link #filter()} method to filter the items to be acquired.
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -51,17 +57,46 @@ final class Content implements Serializable {
      */
     private ContentCondition contentCondition;
 
+    /**
+     * The constructor.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param attributes The set containing the attribute names defined in the
+     *                   selected nodes of the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private Content(@NonNull Map<String, Object> content, @NonNull Set<String> attributes,
             @NonNull Map<String, String> conditions) {
         this.contentSelection = ContentSelection.from(content, attributes);
         this.contentCondition = ContentCondition.from(content, conditions);
     }
 
+    /**
+     * Returns the new instance of {@link Content} based on the arguments.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param attributes The set containing the attribute names defined in the
+     *                   selected nodes of the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     * @return The new instance of {@link Content}
+     *
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     protected static Content from(@NonNull Map<String, Object> content, @NonNull Set<String> attributes,
             @NonNull Map<String, String> conditions) {
         return new Content(content, attributes, conditions);
     }
 
+    /**
+     * Filters content based on the specified conditions.
+     *
+     * @return The filtered content
+     */
     protected List<Map<String, String>> filter() {
 
         final List<Map<String, String>> filtredContent = new ArrayList<>();

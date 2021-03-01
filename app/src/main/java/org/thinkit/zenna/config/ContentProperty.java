@@ -90,10 +90,24 @@ public final class ContentProperty {
         return this.properties != null;
     }
 
+    /**
+     * Retrieves the content package name from the property file and returns it as a
+     * string. If {@code "contentPackage"} is not set in the property file, an empty
+     * string will be returned.
+     *
+     * @return The content package name set in the property file
+     */
     public String getContentPackage() {
         return ContentPackage.from(this.getProperty(ContentPropertyKey.CONTENT_PACKAGE)).getProperty();
     }
 
+    /**
+     * Retrieves the mapper suffix name from the property file and returns it as a
+     * string. If {@code "mapperSuffix"} is not set in the property file, an empty
+     * string will be returned.
+     *
+     * @return The mapper suffix name set in the property file
+     */
     public String getMapperSuffix() {
         return MapperSuffix.from(this.getProperty(ContentPropertyKey.MAPPER_SUFFIX)).getProperty();
     }
