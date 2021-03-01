@@ -40,7 +40,7 @@ import lombok.ToString;
  * be thrown when executing the constructor process, but a
  * {@link NullPointerException} will be thrown when executing the {@link #load}
  * method. For this reason, be sure to pass a content input stream object that
- * is not {@link null} in order for the content loading process to be
+ * is not {@code null} in order for the content loading process to be
  * successful.
  *
  * <p>
