@@ -74,18 +74,24 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
     public final List<R> scan() {
 
         final ContentObject<R> contentObject = ContentObject.from(this);
-
         final Map<String, Object> rawContent = this.getRawContent(contentObject);
         final ResultType<R> resultType = this.getResultType(rawContent);
-
-        if (!resultType.isExist()) {
-            throw new IllegalStateException();
-        }
 
         return resultType.createResultEntities(
                 this.evaluateContent(rawContent, resultType.getAttributes(), contentObject.getConditions()));
     }
 
+    /**
+     * Returns the content data defined in the content file. This method does not
+     * evaluate and filter the content based on the conditions.
+     *
+     * @param contentObject The object mapped to content
+     * @return The raw content
+     *
+     * @exception NullPointerException     If {@code null} is passed as an argument
+     * @exception ContentNotFoundException If the specified content file does not
+     *                                     exist
+     */
     private Map<String, Object> getRawContent(@NonNull final ContentObject<R> contentObject) {
 
         if (this.cachedContent != null) {
@@ -103,11 +109,33 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
         return ContentLoader.from(contentStream).load();
     }
 
+    /**
+     * Returns a result type that represents a content entity based on the value of
+     * {@code "resultType"} specified in the content file.
+     *
+     * @param rawContent The map containing the items defined in the content file
+     * @return The object of result type
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private ResultType<R> getResultType(@NonNull final Map<String, Object> rawContent) {
         final Map<String, Object> metaMap = ContentNodeResolver.getNodeMap(rawContent, MetaNodeKey.META);
         return ResultType.from(ContentNodeResolver.getString(metaMap, MetaNodeKey.RESULT_TYPE));
     }
 
+    /**
+     * Returns the content data evaluated based on the specified conditions as a
+     * list structure.
+     *
+     * @param rawContent The map containing the items defined in the content file
+     * @param attributes The set containing the attribute names defined in the
+     *                   selected nodes of the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     * @return The evaluated content list
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private List<Map<String, String>> evaluateContent(@NonNull final Map<String, Object> rawContent,
             @NonNull final Set<String> attributes, @NonNull final Map<String, String> conditions) {
         return ContentEvaluator.builder().content(rawContent).attributes(attributes).conditions(conditions).build()

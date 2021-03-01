@@ -98,6 +98,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     /**
      * Returns the simple name of the underlying class as given in the source code.
      * Returns an empty string if the underlying class is anonymous.
+     *
      * <p>
      * The simple name of an array is the simple name of the component type with
      * "[]" appended. In particular the simple name of an array whose component type
@@ -122,9 +123,11 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
 
     /**
      * Returns an input stream for reading the specified resource.
+     *
      * <p>
      * The search order is described in the documentation for
      * {@link #getResource(String)} .
+     *
      * <p>
      * Resources in named modules are subject to the encapsulation rules specified
      * by {@link Module#getResourceAsStream Module.getResourceAsStream}.
@@ -132,7 +135,6 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      * ending with "{@code .class}", this method will only find resources in
      * packages of named modules when the package is {@link Module#isOpen(String)
      * opened} unconditionally.
-     * </p>
      *
      * @param name The resource name
      *
@@ -153,12 +155,15 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      * the class or interface represented by this class object. This includes
      * public, protected, default (package) access, and private fields, but excludes
      * inherited fields.
+     *
      * <p>
      * If this class object represents a class or interface with no declared fields,
      * then this method returns an empty list.
+     *
      * <p>
      * If this class object represents an array type, a primitive type, or void,
      * then this method returns an empty list.
+     *
      * <p>
      * The elements in the returned array are not sorted and are not in any
      * particular order.
@@ -172,11 +177,13 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
 
     /**
      * Returns the content file name.
+     *
      * <p>
      * If an alias name is set in the {@link Content} annotation given to the
      * content class, the specified alias name is used, and if no alias name is
      * specified in the {@link Content} annotation, the name of the content class is
      * inferred as the content file name.
+     *
      * <p>
      * If no alias name is specified in the annotation, the class name up to
      * {@code "Mapper"} of the annotated content object will be retrieved as the

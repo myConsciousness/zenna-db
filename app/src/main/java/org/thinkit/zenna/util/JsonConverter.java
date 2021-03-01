@@ -32,6 +32,7 @@ import lombok.NonNull;
 /**
  * This class defines a generic conversion process for json using the Jackson
  * library.
+ *
  * <p>
  * Use the methods defined in {@link JsonConverter} to perform the json
  * conversion process. Use {@link JsonConverter#toObject(String, TypeReference)}

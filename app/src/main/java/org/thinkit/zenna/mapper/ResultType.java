@@ -91,15 +91,6 @@ final class ResultType<T extends ContentEntity> implements Serializable {
     }
 
     /**
-     * Test for the existence of a result type.
-     *
-     * @return {@code true} if the result type exists, otherwise {@code false}
-     */
-    public boolean isExist() {
-        return this.resultType != null;
-    }
-
-    /**
      * Returns a set of attribute names for the content.
      * <p>
      * On the second and subsequent method calls, the cached attribute set will be
