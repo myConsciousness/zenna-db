@@ -49,7 +49,7 @@ public final class ContentProperty {
     private Properties properties;
 
     /**
-     * The constructor
+     * The constructor.
      *
      * @param contentObject The content object
      *

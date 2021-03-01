@@ -42,7 +42,9 @@ import lombok.ToString;
  * empty, i.e. when the condition does not exist. {@code null} is not allowed.
  *
  * <p>
- *
+ * To determine whether an item is selectable that satisfies a specific
+ * condition, execute the {@link #isSatisfied(String)} method with the value
+ * specified in {@code "conditionId"} of the selected item as an argument.
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -96,24 +98,38 @@ final class ContentCondition implements Serializable {
     }
 
     /**
+     * Check if the condition associated with the value of {@code "conditionId"} set
+     * in the selected item is satisfied.
      *
-     * @param conditionId
-     * @return
+     * @param conditionId The condition id to be checked
+     * @return {@code true} if the condition associated with the value of
+     *         {@code "conditionId"} is met, otherwise {@code false}
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
      */
     protected boolean isSatisfied(@NonNull final String conditionId) {
         return conditionIds.contains(conditionId);
     }
 
-    private List<Map<String, Object>> getConditionNodes(@NonNull Map<String, Object> content) {
-        return ContentNodeResolver.getNodeList(content, ConditionNodeKey.CONDITION_NODES);
-    }
-
+    /**
+     * Checks the specified conditions against the conditions defined in the content
+     * file and returns a list of condition IDs that satisfy the conditions. If the
+     * specified condition is empty, or if the condition is not defined in the
+     * content file, an empty list is returned.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param conditions The map containing condition data to be checked against the
+     *                   conditions defined in the content file
+     * @return The list containing the condition IDs that satisfy the conditions
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private List<String> getConditionIds(@NonNull Map<String, Object> content,
             @NonNull Map<String, String> conditions) {
 
         final List<Map<String, Object>> conditionNodes = this.getConditionNodes(content);
 
-        if (conditionNodes.isEmpty()) {
+        if (conditions.isEmpty() || conditionNodes.isEmpty()) {
             this.conditionIds = new ArrayList<>(0);
         }
 
@@ -132,6 +148,30 @@ final class ContentCondition implements Serializable {
         return conditionIds;
     }
 
+    /**
+     * Returns the condition node part from the content.
+     *
+     * @param content The map containing the items defined in the content file
+     * @return The map of condition nodes
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
+    private List<Map<String, Object>> getConditionNodes(@NonNull Map<String, Object> content) {
+        return ContentNodeResolver.getNodeList(content, ConditionNodeKey.CONDITION_NODES);
+    }
+
+    /**
+     * Checks the specified conditions against those defined in the content file. If
+     * all the conditions are met, {@code true} will be returned; if any condition
+     * is not met, {@code false} will be returned.
+     *
+     * @param conditionNodes The conditions defined in the content file
+     * @param conditions     The map containing condition data to be checked against
+     *                       the conditions defined in the content file
+     * @return {@code true} if all the conditions are met, otherwise {@code false}
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private boolean isConditionSatisfied(@NonNull List<Map<String, Object>> conditionNodes,
             @NonNull Map<String, String> conditions) {
 

@@ -132,6 +132,16 @@ public final class ContentEvaluator implements Evaluator {
         return Content.from(content, attributes, conditions).filter();
     }
 
+    /**
+     * Check the prerequisites for evaluating your content.
+     *
+     * <p>
+     * It is assumed that the collection containing the content and attributes is
+     * {@code null} or non-empty. Collections containing conditions are allowed to
+     * be empty because the conditions may not be specified, but {@code null} is not
+     * allowed. An exception will always be thrown at runtime if the preconditions
+     * are not met.
+     */
     private void checkPreconditions() {
         Preconditions.requireNonEmpty(this.content,
                 String.format("The content map must not be null or empty. The content map = %s", this.content));

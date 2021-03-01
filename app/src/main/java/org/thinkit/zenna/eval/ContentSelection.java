@@ -34,6 +34,24 @@ import lombok.NonNull;
 import lombok.ToString;
 
 /**
+ * The class that represents a group of nodes that handle content selections.
+ *
+ * <p>
+ * This class is designed to be an iterable object that implements the
+ * {@link Iterator} interface. The {@link #hasNext()} method is provided to
+ * define the necessary processing for iterating over the selected items in the
+ * content file, and the {@link #next()} method does not need to be used. The
+ * {@link #next()} method is implemented to only return an instance of itself,
+ * and is deprecated.
+ *
+ * <p>
+ * By executing the {@code hasNext()} method, the value of {@code "conditionId"}
+ * of the currently focused selection will be cached. To check whether the
+ * currently focused selection item meets the condition and can be selected,
+ * execute {@link #isSelectable(ContentCondition)} with the object of
+ * {@link ContentCondition} representing the content condition as an argument.
+ * To get the currently focused selection group, execute the
+ * {@link #getSelection()} method.
  *
  * @author Kato Shinya
  * @since 1.0.0
@@ -41,7 +59,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ContentSelection implements Iterator<ContentSelection>, Serializable {
+final class ContentSelection implements Iterator<ContentSelection>, Serializable {
 
     /**
      * The serial version UID
@@ -73,6 +91,18 @@ public final class ContentSelection implements Iterator<ContentSelection>, Seria
      */
     private String conditionId;
 
+    /**
+     * The constructor.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param attributes The set containing the attribute names defined in the
+     *                   selected nodes of the content file
+     *
+     * @exception NullPointerException         If {@code null} is passed as an
+     *                                         argument
+     * @exception IllegalContentStateException If the selection is not defined in
+     *                                         the content file
+     */
     private ContentSelection(@NonNull Map<String, Object> content, @NonNull Set<String> attributes) {
 
         final List<Map<String, Object>> selectionNodes = this.getSelectionNodes(content);
@@ -84,6 +114,19 @@ public final class ContentSelection implements Iterator<ContentSelection>, Seria
         this.iterator = selectionNodes.iterator();
     }
 
+    /**
+     * Returns the new instance of {@link ContentSelection} based on the arguments.
+     *
+     * @param content    The map containing the items defined in the content file
+     * @param attributes The set containing the attribute names defined in the
+     *                   selected nodes of the content file
+     * @return The new instance of {@link ContentSelection}
+     *
+     * @exception NullPointerException         If {@code null} is passed as an
+     *                                         argument
+     * @exception IllegalContentStateException If the selection is not defined in
+     *                                         the content file
+     */
     protected static ContentSelection from(@NonNull Map<String, Object> content, @NonNull Set<String> attributes) {
         return new ContentSelection(content, attributes);
     }
@@ -102,16 +145,37 @@ public final class ContentSelection implements Iterator<ContentSelection>, Seria
         return true;
     }
 
+    /**
+     * This method just returns an instance of itself. It is deprecated and should
+     * not be used.
+     *
+     * @deprecated
+     */
     @Override
     @Deprecated
     public ContentSelection next() {
         return this;
     }
 
+    /**
+     * Check if the currently focused item group satisfies the condition and can be
+     * selected.
+     *
+     * @param contentCondition The object that represents a content condition
+     * @return {@code true} if the currently focused selection group is selectable,
+     *         otherwise {@code false}
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     protected boolean isSelectable(@NonNull ContentCondition contentCondition) {
         return StringUtils.isEmpty(this.conditionId) || contentCondition.isSatisfied(conditionId);
     }
 
+    /**
+     * Returns the currently focused set of selected items in the Map structure.
+     *
+     * @return The currently focused set of selected items
+     */
     protected Map<String, String> getSelection() {
 
         final Map<String, String> selection = new HashMap<>(this.attributeCount);
@@ -123,6 +187,14 @@ public final class ContentSelection implements Iterator<ContentSelection>, Seria
         return selection;
     }
 
+    /**
+     * Returns the selection node part from the content.
+     *
+     * @param content The map containing the items defined in the content file
+     * @return The map of selection nodes
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     private List<Map<String, Object>> getSelectionNodes(@NonNull Map<String, Object> content) {
         return ContentNodeResolver.getNodeList(content, SelectionNodeKey.SELECTION_NODES);
     }
