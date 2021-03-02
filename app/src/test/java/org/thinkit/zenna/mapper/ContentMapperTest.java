@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -42,5 +43,31 @@ public final class ContentMapperTest {
 
         assertEquals("success1", concreteContentEntity.getTest1());
         assertEquals("success2", concreteContentEntity.getTest2());
+    }
+
+    @Test
+    void testWhenContentHasSelectionWithCondition() {
+
+        final List<List<String>> expectedResults = new ArrayList<>(2);
+        expectedResults.add(List.of("success1", "success2"));
+        expectedResults.add(List.of("success3", "success4"));
+
+        final ConcreteContentWithConditionsMapper mapper = ConcreteContentWithConditionsMapper.newInstance();
+
+        for (int i = 0; i < 2; i++) {
+
+            mapper.setVariableName(String.valueOf(i));
+
+            final List<ConcreteContentEntity> concreteContentEntities = mapper.scan();
+
+            assertNotNull(concreteContentEntities);
+            assertTrue(concreteContentEntities.size() == 1);
+
+            final ConcreteContentEntity concreteContentEntity = concreteContentEntities.get(0);
+            final List<String> expectedResult = expectedResults.get(i);
+
+            assertEquals(expectedResult.get(0), concreteContentEntity.getTest1());
+            assertEquals(expectedResult.get(1), concreteContentEntity.getTest2());
+        }
     }
 }

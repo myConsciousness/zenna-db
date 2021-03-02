@@ -65,6 +65,11 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private Class<?> contentObject;
 
     /**
+     * The mapper
+     */
+    private Mapper<T> mapper;
+
+    /**
      * The property of content
      */
     private ContentProperty contentProperty;
@@ -77,6 +82,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
      * @exception NullPointerException If {@code null} is passed as an argument
      */
     private ContentObject(@NonNull final Mapper<T> contentMapper) {
+        this.mapper = contentMapper;
         this.contentObject = contentMapper.getClass();
         this.contentProperty = ContentProperty.from(contentObject);
     }
@@ -226,7 +232,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
             try {
                 conditions.put(this.getConditionKey(field), this.getConditionValue(field));
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                throw new IllegalStateException();
+                throw new IllegalStateException(e);
             }
         });
 
@@ -318,13 +324,13 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
         final Class<?> fieldType = field.getType();
 
         if (fieldType.equals(Catalog.class)) {
-            final Catalog<?> catalog = (Catalog<?>) field.get(this.contentObject);
+            final Catalog<?> catalog = (Catalog<?>) field.get(this.mapper);
             return String.valueOf(catalog.getCode());
         } else if (fieldType.equals(BiCatalog.class)) {
-            final BiCatalog<?, ?> biCatalog = (BiCatalog<?, ?>) field.get(this.contentObject);
+            final BiCatalog<?, ?> biCatalog = (BiCatalog<?, ?>) field.get(this.mapper);
             return String.valueOf(biCatalog.getCode());
         }
 
-        return String.valueOf(field.get(this.contentObject));
+        return String.valueOf(field.get(this.mapper));
     }
 }
