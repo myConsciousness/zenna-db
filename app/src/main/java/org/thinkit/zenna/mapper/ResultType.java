@@ -92,6 +92,7 @@ final class ResultType<T extends ContentEntity> implements Serializable {
 
     /**
      * Returns a set of attribute names for the content.
+     *
      * <p>
      * On the second and subsequent method calls, the cached attribute set will be
      * returned.
@@ -119,6 +120,15 @@ final class ResultType<T extends ContentEntity> implements Serializable {
         return attributes;
     }
 
+    /**
+     * Returns the list of content entity object dynamically generated from the data
+     * defined in the content file.
+     *
+     * @param contents The content object
+     * @return The list of content entity object
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
     public List<T> createResultEntities(@NonNull final List<Map<String, String>> contents) {
 
         final List<T> resultEntities = new ArrayList<>();
@@ -143,6 +153,37 @@ final class ResultType<T extends ContentEntity> implements Serializable {
         return resultEntities;
     }
 
+    /**
+     * Generates and returns a new instance of the class object generated from the
+     * package name defined in {@code "resultType"} of the content file.
+     *
+     * @return The new instance of the class object generated from the package name
+     *         defined in {@code "resultType"} of the content file
+     *
+     * @throws InstantiationException    If the class that declares the underlying
+     *                                   constructor represents an abstract class
+     * @throws IllegalAccessException    If {@code Constructor} object is enforcing
+     *                                   Java language access control and the
+     *                                   underlying constructor is inaccessible
+     * @throws IllegalArgumentException  If the number of actual and formal
+     *                                   parameters differ; if an unwrapping
+     *                                   conversion for primitive arguments fails;
+     *                                   or if, after possible unwrapping, a
+     *                                   parameter value cannot be converted to the
+     *                                   corresponding formal parameter type by a
+     *                                   method invocation conversion; if this
+     *                                   constructor pertains to an enum type
+     * @throws InvocationTargetException If the underlying constructor throws an
+     *                                   exception
+     * @throws NoSuchMethodException     If a matching method is not found
+     * @throws SecurityException         If a security manager is present and the
+     *                                   caller's class loader is not the same as or
+     *                                   an ancestor of the class loader for the
+     *                                   current class and invocation of
+     *                                   {@link SecurityManager#checkPackageAccess
+     *                                   s.checkPackageAccess()} denies access to
+     *                                   the package of this class
+     */
     @SuppressWarnings("unchecked")
     private T getResultEntity() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
