@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2021 Kato Shinya.
  *
@@ -17,6 +16,7 @@ package org.thinkit.zenna.exception;
 
 /**
  * Thrown to indicate that an error has occurred when parsing the content file.
+ *
  * <p>
  * If this exception is thrown, it is possible that the format of the content
  * file you defined is not correct, or that there is an error in the JSON
@@ -51,6 +51,7 @@ public final class ContentNotFoundException extends RuntimeException {
 
     /**
      * Constructs a new exception with the specified detail message and cause.
+     *
      * <p>
      * Note that the detail message associated with <code>cause</code> is <i>not</i>
      * automatically incorporated in this exception's detail message.
