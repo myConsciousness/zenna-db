@@ -113,7 +113,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>static <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス">ContentProperty</a></code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#from(java.lang.Class)">from</a></span>&#8203;(@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#from(java.lang.Class,org.thinkit.zenna.catalog.PropertyFileName)">from</a></span>&#8203;(@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject,
+@NonNull <a href="../catalog/PropertyFileName.html" title="org.thinkit.zenna.catalog内の列挙型">PropertyFileName</a>&nbsp;propertyFileName)</code></th>
 <td class="col-last">
 <div class="block">Returns the new instance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a> based on an argument.</div>
 </td>
@@ -170,14 +171,17 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 <h2>メソッドの詳細</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="from(java.lang.Class)">
+<section class="detail" id="from(java.lang.Class,org.thinkit.zenna.catalog.PropertyFileName)">
 <h3>from</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス">ContentProperty</a></span>&nbsp;<span class="member-name">from</span>&#8203;(<span class="parameters">@NonNull
-@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject)</span></div>
+@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject,
+@NonNull
+@NonNull <a href="../catalog/PropertyFileName.html" title="org.thinkit.zenna.catalog内の列挙型">PropertyFileName</a>&nbsp;propertyFileName)</span></div>
 <div class="block">Returns the new instance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a> based on an argument.</div>
 <dl class="notes">
 <dt>パラメータ:</dt>
 <dd><code>contentObject</code> - The content object</dd>
+<dd><code>propertyFileName</code> - The file name of property file</dd>
 <dt>戻り値:</dt>
 <dd>The new isntance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a></dd>
 <dt>例外:</dt>
