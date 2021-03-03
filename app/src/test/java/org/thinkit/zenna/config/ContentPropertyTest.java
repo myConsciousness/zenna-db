@@ -14,7 +14,13 @@
 
 package org.thinkit.zenna.config;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.thinkit.zenna.catalog.PropertyFileName;
+import org.thinkit.zenna.mapper.ConcreteContentMapper;
 
 /**
  * The class that manages test case of {@link ContentProperty} .
@@ -24,8 +30,93 @@ import org.junit.jupiter.api.Nested;
  */
 public final class ContentPropertyTest {
 
+    /**
+     * The property file name with empty attributes
+     */
+    private static final String EMPTY_ATTRIBUTE_PROPERTY_NAME = "emptyAttributeProperty.properties";
+
+    /**
+     * The empty property file name
+     */
+    private static final String EMPTY_PROPERTY_NAME = "emptyProperty.properties";
+
+    /**
+     * The nested class for {@link ContentProperty#getContentPackage()} method.
+     */
     @Nested
     class TestGetContentPackage {
 
+        @Test
+        void testWhenAttributeHasContentPackage() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    PropertyFileName.DEFAULT.getTag());
+            final String contentPackage = contentProperty.getContentPackage();
+
+            assertNotNull(contentPackage);
+            assertEquals("/org/thinkit/zenna/", contentPackage);
+        }
+
+        @Test
+        void testWhenAttributeHasNotContentPackage() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    EMPTY_ATTRIBUTE_PROPERTY_NAME);
+            final String contentPackage = contentProperty.getContentPackage();
+
+            assertNotNull(contentPackage);
+            assertEquals("", contentPackage);
+        }
+
+        @Test
+        void testWhenPropertyHasNotContentPackageAttribute() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    EMPTY_PROPERTY_NAME);
+            final String contentPackage = contentProperty.getContentPackage();
+
+            assertNotNull(contentPackage);
+            assertEquals("", contentPackage);
+        }
+    }
+
+    /**
+     * The nested class for {@link ContentProperty#getMapperSuffix()} method.
+     */
+    @Nested
+    class TestGetMapperSuffix {
+
+        @Test
+        void testWhenAttributeHasContentPackage() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    PropertyFileName.DEFAULT.getTag());
+            final String mapperSuffix = contentProperty.getMapperSuffix();
+
+            assertNotNull(mapperSuffix);
+            assertEquals("TestSuffix", mapperSuffix);
+        }
+
+        @Test
+        void testWhenAttributeHasNotMapperSuffix() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    EMPTY_ATTRIBUTE_PROPERTY_NAME);
+            final String mapperSuffix = contentProperty.getMapperSuffix();
+
+            assertNotNull(mapperSuffix);
+            assertEquals("", mapperSuffix);
+        }
+
+        @Test
+        void testWhenPropertyHasNotMapperSuffixAttribute() {
+
+            final ContentProperty contentProperty = ContentProperty.from(ConcreteContentMapper.newInstance().getClass(),
+                    EMPTY_PROPERTY_NAME);
+            final String mapperSuffix = contentProperty.getMapperSuffix();
+
+            assertNotNull(mapperSuffix);
+            assertEquals("", mapperSuffix);
+        }
     }
 }

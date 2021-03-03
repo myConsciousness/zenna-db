@@ -20,7 +20,6 @@ import java.util.Properties;
 
 import org.thinkit.zenna.catalog.ContentPropertyKey;
 import org.thinkit.zenna.catalog.ContentRoot;
-import org.thinkit.zenna.catalog.PropertyFileName;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -52,9 +51,9 @@ public final class ContentProperty {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    private ContentProperty(@NonNull final Class<?> contentObject, @NonNull PropertyFileName propertyFileName) {
+    private ContentProperty(@NonNull final Class<?> contentObject, @NonNull String propertyFileName) {
         try (final InputStream stream = contentObject.getClassLoader()
-                .getResourceAsStream(ContentRoot.DEFAULT.getTag() + propertyFileName.getTag())) {
+                .getResourceAsStream(ContentRoot.DEFAULT.getTag() + propertyFileName)) {
             if (stream != null) {
                 final Properties properties = new Properties();
                 properties.load(stream);
@@ -75,8 +74,7 @@ public final class ContentProperty {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    public static ContentProperty from(@NonNull final Class<?> contentObject,
-            @NonNull PropertyFileName propertyFileName) {
+    public static ContentProperty from(@NonNull final Class<?> contentObject, @NonNull String propertyFileName) {
         return new ContentProperty(contentObject, propertyFileName);
     }
 

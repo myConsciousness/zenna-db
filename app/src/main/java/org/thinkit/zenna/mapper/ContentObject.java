@@ -85,7 +85,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private ContentObject(@NonNull final Mapper<T> contentMapper) {
         this.mapper = contentMapper;
         this.contentObject = contentMapper.getClass();
-        this.contentProperty = ContentProperty.from(contentObject, PropertyFileName.DEFAULT);
+        this.contentProperty = ContentProperty.from(contentObject, PropertyFileName.DEFAULT.getTag());
     }
 
     /**
