@@ -20,18 +20,18 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The catalog that manages a root path of content.
+ * The catalog that manages name of property file
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
 @RequiredArgsConstructor
-public enum ContentRoot implements BiCatalog<ContentRoot, String> {
+public enum PropertyFileName implements BiCatalog<PropertyFileName, String> {
 
     /**
-     * {@code "resources/zenna"}
+     * The default property file name
      */
-    DEFAULT(0, "zenna/");
+    DEFAULT(0, "content.properties");
 
     /**
      * The code

@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import org.thinkit.zenna.catalog.ContentPropertyKey;
 import org.thinkit.zenna.catalog.ContentRoot;
+import org.thinkit.zenna.catalog.PropertyFileName;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -39,11 +40,6 @@ import lombok.ToString;
 public final class ContentProperty {
 
     /**
-     * The name of property file
-     */
-    private static final String PROPERTY_FILE_NAME = ContentRoot.DEFAULT.getTag() + "/content.properties";
-
-    /**
      * The properties
      */
     private Properties properties;
@@ -51,12 +47,14 @@ public final class ContentProperty {
     /**
      * The constructor.
      *
-     * @param contentObject The content object
+     * @param contentObject    The content object
+     * @param propertyFileName The name of property file
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    private ContentProperty(@NonNull final Class<?> contentObject) {
-        try (final InputStream stream = contentObject.getClassLoader().getResourceAsStream(PROPERTY_FILE_NAME)) {
+    private ContentProperty(@NonNull final Class<?> contentObject, @NonNull PropertyFileName propertyFileName) {
+        try (final InputStream stream = contentObject.getClassLoader()
+                .getResourceAsStream(ContentRoot.DEFAULT.getTag() + propertyFileName.getTag())) {
             if (stream != null) {
                 final Properties properties = new Properties();
                 properties.load(stream);
@@ -71,13 +69,15 @@ public final class ContentProperty {
     /**
      * Returns the new instance of {@link ContentProperty} based on an argument.
      *
-     * @param contentObject The content object
+     * @param contentObject    The content object
+     * @param propertyFileName The file name of property file
      * @return The new isntance of {@link ContentProperty}
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    public static ContentProperty from(@NonNull final Class<?> contentObject) {
-        return new ContentProperty(contentObject);
+    public static ContentProperty from(@NonNull final Class<?> contentObject,
+            @NonNull PropertyFileName propertyFileName) {
+        return new ContentProperty(contentObject, propertyFileName);
     }
 
     /**

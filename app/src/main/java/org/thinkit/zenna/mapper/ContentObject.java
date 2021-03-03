@@ -29,6 +29,7 @@ import org.thinkit.zenna.annotation.Content;
 import org.thinkit.zenna.catalog.ContentExtension;
 import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.catalog.MapperSuffix;
+import org.thinkit.zenna.catalog.PropertyFileName;
 import org.thinkit.zenna.config.ContentProperty;
 import org.thinkit.zenna.entity.ContentEntity;
 
@@ -84,7 +85,7 @@ final class ContentObject<T extends ContentEntity> implements Serializable {
     private ContentObject(@NonNull final Mapper<T> contentMapper) {
         this.mapper = contentMapper;
         this.contentObject = contentMapper.getClass();
-        this.contentProperty = ContentProperty.from(contentObject);
+        this.contentProperty = ContentProperty.from(contentObject, PropertyFileName.DEFAULT);
     }
 
     /**
