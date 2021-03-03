@@ -18,7 +18,6 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,6 +28,7 @@ import java.util.Set;
 import org.thinkit.zenna.annotation.Attribute;
 import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.exception.ResultTypeNotFoundException;
+import org.thinkit.zenna.util.FieldResolver;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -110,12 +110,8 @@ final class ResultType<T extends ContentEntity> implements Serializable {
         Arrays.asList(this.resultType.getDeclaredFields()).forEach(field -> {
             field.setAccessible(true);
 
-            if (!Modifier.isStatic(field.getModifiers())) {
-                if (field.isAnnotationPresent(Attribute.class)) {
-                    attributes.add(field.getAnnotation(Attribute.class).value());
-                } else {
-                    attributes.add(field.getName());
-                }
+            if (!FieldResolver.isStatic(field)) {
+                attributes.add(this.getAttribute(field));
             }
         });
 
@@ -145,12 +141,8 @@ final class ResultType<T extends ContentEntity> implements Serializable {
                 for (final Field field : fields) {
                     field.setAccessible(true);
 
-                    if (!Modifier.isStatic(field.getModifiers())) {
-                        if (field.isAnnotationPresent(Attribute.class)) {
-                            field.set(resultEntity, content.get(field.getAnnotation(Attribute.class).value()));
-                        } else {
-                            field.set(resultEntity, content.get(field.getName()));
-                        }
+                    if (!FieldResolver.isStatic(field)) {
+                        field.set(resultEntity, content.get(this.getAttribute(field)));
                     }
                 }
 
@@ -162,6 +154,29 @@ final class ResultType<T extends ContentEntity> implements Serializable {
         }
 
         return resultEntities;
+    }
+
+    /**
+     * Returns the attribute name based on the {@code field} passed as an argument.
+     *
+     * <p>
+     * If the {@link Attribute} annotation is set for the field, the attribute name
+     * set in the annotation will be returned, otherwise the field name will be
+     * returned as the attribute name.
+     *
+     * @param field The field
+     * @return The attribute name set in the annotation if the field has a
+     *         {@link Attribute} annotation, otherwise the field name
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
+    private String getAttribute(@NonNull Field field) {
+
+        if (field.isAnnotationPresent(Attribute.class)) {
+            return field.getAnnotation(Attribute.class).value();
+        }
+
+        return field.getName();
     }
 
     /**
