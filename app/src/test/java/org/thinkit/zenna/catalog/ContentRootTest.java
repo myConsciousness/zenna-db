@@ -34,7 +34,7 @@ public final class ContentRootTest {
     /**
      * The expected catalog definition
      */
-    private static final Map<Integer, String> expectedDefinition = new HashMap<>() {
+    private static final Map<Integer, String> EXPECTED_DEFINITION = new HashMap<>() {
 
         /**
          * The serial version UID
@@ -42,7 +42,7 @@ public final class ContentRootTest {
         private static final long serialVersionUID = 7118672793190046182L;
 
         {
-            put(0, "zenna");
+            put(0, "zenna/");
         }
     };
 
@@ -52,7 +52,7 @@ public final class ContentRootTest {
         final List<ContentRoot> contentRoots = Arrays.asList(ContentRoot.values());
 
         for (int i = 0, size = contentRoots.size(); i < size; i++) {
-            assertEquals(expectedDefinition.get(i), contentRoots.get(i).getTag());
+            assertEquals(EXPECTED_DEFINITION.get(i), contentRoots.get(i).getTag());
         }
     }
 }

@@ -34,7 +34,7 @@ public final class ContentPropertyKeyTest {
     /**
      * The expected catalog definition
      */
-    private static final Map<Integer, String> expectedDefinition = new HashMap<>() {
+    private static final Map<Integer, String> EXPECTED_DEFINITION = new HashMap<>() {
 
         /**
          * The serial version UID
@@ -53,7 +53,7 @@ public final class ContentPropertyKeyTest {
         final List<ContentPropertyKey> contentPropertyKeys = Arrays.asList(ContentPropertyKey.values());
 
         for (int i = 0, size = contentPropertyKeys.size(); i < size; i++) {
-            assertEquals(expectedDefinition.get(i), contentPropertyKeys.get(i).getTag());
+            assertEquals(EXPECTED_DEFINITION.get(i), contentPropertyKeys.get(i).getTag());
         }
     }
 }

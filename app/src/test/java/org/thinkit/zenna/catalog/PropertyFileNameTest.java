@@ -24,12 +24,12 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 /**
- * The class that manages test case of {@link MapperSuffix} .
+ * The class that manages test case of {@link PropertyFileName} .
  *
  * @author Kato Shinya
  * @since 1.0.0
  */
-public final class MapperSuffixTest {
+public final class PropertyFileNameTest {
 
     /**
      * The expected catalog definition
@@ -39,20 +39,20 @@ public final class MapperSuffixTest {
         /**
          * The serial version UID
          */
-        private static final long serialVersionUID = 2779977197021547823L;
+        private static final long serialVersionUID = 6491053865641003305L;
 
         {
-            put(0, "Mapper");
+            put(0, "content.properties");
         }
     };
 
     @Test
     void testExpectedDefinition() {
 
-        final List<MapperSuffix> mapperSuffixs = Arrays.asList(MapperSuffix.values());
+        final List<PropertyFileName> propertyFileNames = Arrays.asList(PropertyFileName.values());
 
-        for (int i = 0, size = mapperSuffixs.size(); i < size; i++) {
-            assertEquals(EXPECTED_DEFINITION.get(i), mapperSuffixs.get(i).getTag());
+        for (int i = 0, size = propertyFileNames.size(); i < size; i++) {
+            assertEquals(EXPECTED_DEFINITION.get(i), propertyFileNames.get(i).getTag());
         }
     }
 }

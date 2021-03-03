@@ -34,7 +34,7 @@ public final class ContentExtensionTest {
     /**
      * The expected catalog definition
      */
-    private static final Map<Integer, String> expectedDefinition = new HashMap<>() {
+    private static final Map<Integer, String> EXPECTED_DEFINITION = new HashMap<>() {
 
         /**
          * The serial version UID
@@ -52,7 +52,7 @@ public final class ContentExtensionTest {
         final List<ContentExtension> contentExtensions = Arrays.asList(ContentExtension.values());
 
         for (int i = 0, size = contentExtensions.size(); i < size; i++) {
-            assertEquals(expectedDefinition.get(i), contentExtensions.get(i).getTag());
+            assertEquals(EXPECTED_DEFINITION.get(i), contentExtensions.get(i).getTag());
         }
     }
 }
