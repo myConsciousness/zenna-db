@@ -24,9 +24,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
+import org.thinkit.zenna.annotation.Attribute;
 import org.thinkit.zenna.entity.ContentEntity;
 import org.thinkit.zenna.exception.ResultTypeNotFoundException;
 
@@ -111,7 +111,11 @@ final class ResultType<T extends ContentEntity> implements Serializable {
             field.setAccessible(true);
 
             if (!Modifier.isStatic(field.getModifiers())) {
-                attributes.add(field.getName());
+                if (field.isAnnotationPresent(Attribute.class)) {
+                    attributes.add(field.getAnnotation(Attribute.class).value());
+                } else {
+                    attributes.add(field.getName());
+                }
             }
         });
 
@@ -136,17 +140,24 @@ final class ResultType<T extends ContentEntity> implements Serializable {
         try {
             for (final Map<String, String> content : contents) {
                 final T resultEntity = this.getResultEntity();
+                final List<Field> fields = Arrays.asList(resultEntity.getClass().getDeclaredFields());
 
-                for (final Entry<String, String> entry : content.entrySet()) {
-                    final Field field = resultEntity.getClass().getDeclaredField(entry.getKey());
+                for (final Field field : fields) {
                     field.setAccessible(true);
-                    field.set(resultEntity, entry.getValue());
+
+                    if (!Modifier.isStatic(field.getModifiers())) {
+                        if (field.isAnnotationPresent(Attribute.class)) {
+                            field.set(resultEntity, content.get(field.getAnnotation(Attribute.class).value()));
+                        } else {
+                            field.set(resultEntity, content.get(field.getName()));
+                        }
+                    }
                 }
 
                 resultEntities.add(resultEntity);
             }
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | SecurityException | NoSuchFieldException | NoSuchMethodException e) {
+                | SecurityException | NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
 
