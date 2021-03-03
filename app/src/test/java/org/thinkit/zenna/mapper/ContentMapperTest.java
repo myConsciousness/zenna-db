@@ -70,4 +70,31 @@ public final class ContentMapperTest {
             assertEquals(expectedResult.get(1), concreteContentEntity.getTest2());
         }
     }
+
+    @Test
+    void testWhenContentHasAnnotations() {
+
+        final List<List<String>> expectedResults = new ArrayList<>(2);
+        expectedResults.add(List.of("success1", "success2"));
+        expectedResults.add(List.of("success3", "success4"));
+
+        final MapperWithAnnotations mapper = MapperWithAnnotations.newInstance();
+
+        for (int i = 0; i < 2; i++) {
+
+            mapper.setAnotherName(String.valueOf(i));
+
+            final List<ConcreteContentEntityWithAttribute> concreteContentEntityWithAttributes = mapper.scan();
+
+            assertNotNull(concreteContentEntityWithAttributes);
+            assertTrue(concreteContentEntityWithAttributes.size() == 1);
+
+            final ConcreteContentEntityWithAttribute concreteContentEntityWithAttribute = concreteContentEntityWithAttributes
+                    .get(0);
+            final List<String> expectedResult = expectedResults.get(i);
+
+            assertEquals(expectedResult.get(0), concreteContentEntityWithAttribute.getAnotherName1());
+            assertEquals(expectedResult.get(1), concreteContentEntityWithAttribute.getAnotherName2());
+        }
+    }
 }

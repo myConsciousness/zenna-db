@@ -1,0 +1,52 @@
+{
+    "meta": {
+        "author": "Kato Shinya",
+        "encoding": "UTF-8",
+        "description": "The content for testing annotations with conditions.",
+        "resultType": "org.thinkit.zenna.mapper.ConcreteContentEntityWithAttribute"
+    },
+    "selectionNodes": [
+        {
+            "node": {
+                "conditionId": "0",
+                "test1": "success1",
+                "test2": "success2"
+            }
+        },
+        {
+            "node": {
+                "conditionId": "1",
+                "test1": "success3",
+                "test2": "success4"
+            }
+        }
+    ],
+    "conditionNodes": [
+        {
+            "node": {
+                "conditionId": "0",
+                "exclude": false,
+                "conditions": [
+                    {
+                        "keyName": "variableName",
+                        "operator": "=",
+                        "operand": "0"
+                    }
+                ]
+            }
+        },
+        {
+            "node": {
+                "conditionId": "1",
+                "exclude": false,
+                "conditions": [
+                    {
+                        "keyName": "variableName",
+                        "operator": "=",
+                        "operand": "1"
+                    }
+                ]
+            }
+        }
+    ]
+}
