@@ -24,9 +24,11 @@ plugins {
 publishing {
    publications {
         group 'org.thinkit.zenna'
+        archivesBaseName  'maven-upload-sample'
         version = gitVersion()
 
         gpr(MavenPublication) {
+            artifactId = 'zenna-db'
             from(components.java)
         }
     }
