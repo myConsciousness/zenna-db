@@ -66,8 +66,10 @@ dependencies {
 
     implementation 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
     testImplementation 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+    testImplementation 'org.thinkit.test.util:reflection-test-helper:v1.0.2'
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
