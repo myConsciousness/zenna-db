@@ -55,13 +55,11 @@ public final class ContentProperty {
         try (final InputStream stream = contentObject.getClassLoader()
                 .getResourceAsStream(ContentRoot.DEFAULT.getTag() + propertyFileName)) {
             if (stream != null) {
-                final Properties properties = new Properties();
-                properties.load(stream);
-
-                this.properties = properties;
+                this.properties = new Properties();
+                this.properties.load(stream);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -76,16 +74,6 @@ public final class ContentProperty {
      */
     public static ContentProperty from(@NonNull final Class<?> contentObject, @NonNull String propertyFileName) {
         return new ContentProperty(contentObject, propertyFileName);
-    }
-
-    /**
-     * Test for the existence of content property files.
-     *
-     * @return {@code true} if the content property file exists, otherwise
-     *         {@code false}
-     */
-    public boolean isExist() {
-        return this.properties != null;
     }
 
     /**
