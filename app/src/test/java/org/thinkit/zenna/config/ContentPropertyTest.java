@@ -17,8 +17,15 @@ package org.thinkit.zenna.config;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.thinkit.test.util.ReflectionTestHelper;
+import org.thinkit.zenna.catalog.ContentPropertyKey;
+import org.thinkit.zenna.catalog.ContentRoot;
 import org.thinkit.zenna.catalog.PropertyFileName;
 import org.thinkit.zenna.mapper.ConcreteContentMapper;
 
@@ -117,6 +124,83 @@ public final class ContentPropertyTest {
 
             assertNotNull(mapperSuffix);
             assertEquals("", mapperSuffix);
+        }
+    }
+
+    /**
+     * The nested class for {@link ContentProperty#getProperty(ContentPropertyKey)}
+     * method.
+     */
+    @Nested
+    class TestGetProperty {
+
+        /**
+         * The field name of property
+         */
+        private static final String PROPERTY_FIELD_NAME = "properties";
+
+        /**
+         * The method name
+         */
+        private static final String METHOD_NAME = "getProperty";
+
+        @Test
+        void testWhenPropertyIsNotExist() {
+
+            final ReflectionTestHelper<ContentProperty, String> sut = ReflectionTestHelper.from(ContentProperty.class);
+            sut.setFieldValue(PROPERTY_FIELD_NAME, this.getProperties("emptyProperty.properties"));
+            sut.addArgument(ContentPropertyKey.class, ContentPropertyKey.CONTENT_PACKAGE);
+
+            final String expected = "";
+            final String actual = sut.invokeMethod(METHOD_NAME);
+
+            assertNotNull(actual);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void testWhenPropertyIsNotSet() {
+
+            final ReflectionTestHelper<ContentProperty, String> sut = ReflectionTestHelper.from(ContentProperty.class);
+            sut.setFieldValue(PROPERTY_FIELD_NAME, this.getProperties("emptyAttributeProperty.properties"));
+            sut.addArgument(ContentPropertyKey.class, ContentPropertyKey.CONTENT_PACKAGE);
+
+            final String expected = "";
+            final String actual = sut.invokeMethod(METHOD_NAME);
+
+            assertNotNull(actual);
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        void testWhenPropertyIsSet() {
+
+            final ReflectionTestHelper<ContentProperty, String> sut = ReflectionTestHelper.from(ContentProperty.class);
+            sut.setFieldValue(PROPERTY_FIELD_NAME, this.getProperties("content.properties"));
+            sut.addArgument(ContentPropertyKey.class, ContentPropertyKey.CONTENT_PACKAGE);
+
+            final String expected = "org/thinkit/zenna/";
+            final String actual = sut.invokeMethod(METHOD_NAME);
+
+            assertNotNull(actual);
+            assertEquals(expected, actual);
+        }
+
+        /**
+         * Return the property object.
+         *
+         * @param propertyFileName The file name of property
+         * @return The property object
+         */
+        private Properties getProperties(final String propertyFileName) {
+            try (final InputStream stream = this.getClass().getClassLoader()
+                    .getResourceAsStream(ContentRoot.DEFAULT.getTag() + propertyFileName)) {
+                final Properties properties = new Properties();
+                properties.load(stream);
+                return properties;
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 }
