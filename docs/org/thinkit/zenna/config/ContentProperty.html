@@ -15,7 +15,7 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var data = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+<script type="text/javascript">var data = {"i0":10,"i1":9,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","\u3059\u3079\u3066\u306E\u30E1\u30BD\u30C3\u30C9"],1:["t1","static\u30E1\u30BD\u30C3\u30C9"],2:["t2","\u30A4\u30F3\u30B9\u30BF\u30F3\u30B9\u30FB\u30E1\u30BD\u30C3\u30C9"],8:["t4","concrete\u30E1\u30BD\u30C3\u30C9"]};
 var altColor = "alt-color";
 var rowColor = "row-color";
@@ -113,8 +113,8 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 </tr>
 <tr class="row-color" id="i1">
 <td class="col-first"><code>static <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス">ContentProperty</a></code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#from(java.lang.Class,org.thinkit.zenna.catalog.PropertyFileName)">from</a></span>&#8203;(@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject,
-@NonNull <a href="../catalog/PropertyFileName.html" title="org.thinkit.zenna.catalog内の列挙型">PropertyFileName</a>&nbsp;propertyFileName)</code></th>
+<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#from(java.lang.Class,java.lang.String)">from</a></span>&#8203;(@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject,
+@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>&nbsp;propertyFileName)</code></th>
 <td class="col-last">
 <div class="block">Returns the new instance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a> based on an argument.</div>
 </td>
@@ -141,13 +141,6 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 <td class="col-last">&nbsp;</td>
 </tr>
 <tr class="row-color" id="i5">
-<td class="col-first"><code>boolean</code></td>
-<th class="col-second" scope="row"><code><span class="member-name-link"><a href="#isExist()">isExist</a></span>()</code></th>
-<td class="col-last">
-<div class="block">Test for the existence of content property files.</div>
-</td>
-</tr>
-<tr class="alt-color" id="i6">
 <td class="col-first"><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a></code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#toString()">toString</a></span>()</code></th>
 <td class="col-last">&nbsp;</td>
@@ -171,12 +164,12 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 <h2>メソッドの詳細</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="from(java.lang.Class,org.thinkit.zenna.catalog.PropertyFileName)">
+<section class="detail" id="from(java.lang.Class,java.lang.String)">
 <h3>from</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス">ContentProperty</a></span>&nbsp;<span class="member-name">from</span>&#8203;(<span class="parameters">@NonNull
 @NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/Class.html" title="java.lang内のクラスまたはインタフェース" class="external-link">Class</a>&lt;?&gt;&nbsp;contentObject,
 @NonNull
-@NonNull <a href="../catalog/PropertyFileName.html" title="org.thinkit.zenna.catalog内の列挙型">PropertyFileName</a>&nbsp;propertyFileName)</span></div>
+@NonNull <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/String.html" title="java.lang内のクラスまたはインタフェース" class="external-link">String</a>&nbsp;propertyFileName)</span></div>
 <div class="block">Returns the new instance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a> based on an argument.</div>
 <dl class="notes">
 <dt>パラメータ:</dt>
@@ -186,18 +179,6 @@ extends <a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/ja
 <dd>The new isntance of <a href="ContentProperty.html" title="org.thinkit.zenna.config内のクラス"><code>ContentProperty</code></a></dd>
 <dt>例外:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/13/docs/api/java.base/java/lang/NullPointerException.html" title="java.lang内のクラスまたはインタフェース" class="external-link">NullPointerException</a></code> - If <code>null</code> is passed as an argument</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isExist()">
-<h3>isExist</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="member-name">isExist</span>()</div>
-<div class="block">Test for the existence of content property files.</div>
-<dl class="notes">
-<dt>戻り値:</dt>
-<dd><code>true</code> if the content property file exists, otherwise
-         <code>false</code></dd>
 </dl>
 </section>
 </li>
