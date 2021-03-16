@@ -7,14 +7,16 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of Contents**
 
-- [What is it?](#what-is-it)
-- [Benefits](#benefits)
-- [How To Use](#how-to-use)
-  - [1. Add the dependencies](#1-add-the-dependencies)
-- [License](#license)
-- [More Information](#more-information)
+- [Zenna DB](#zenna-db)
+  - [What is it?](#what-is-it)
+  - [Benefits](#benefits)
+  - [How To Use](#how-to-use)
+    - [1. Add the dependencies](#1-add-the-dependencies)
+  - [License](#license)
+  - [More Information](#more-information)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -36,7 +38,7 @@ Preparing...
 
 ```xml
 <dependency>
-  <groupId>org.thinkit.framework.content</groupId>
+  <groupId>org.thinkit.zenna</groupId>
   <artifactId>zenna-db</artifactId>
   <version>v1.0.0</version>
 </dependency>
@@ -65,7 +67,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.thinkit.framework.content:zenna-db:v1.0.0'
+    implementation 'org.thinkit.zenna:zenna-db:v1.0.0'
 }
 ```
 
