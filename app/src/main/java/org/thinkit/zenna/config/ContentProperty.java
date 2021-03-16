@@ -20,6 +20,7 @@ import java.util.Properties;
 
 import org.thinkit.zenna.catalog.ContentPropertyKey;
 import org.thinkit.zenna.catalog.ContentRoot;
+import org.thinkit.zenna.exception.PropertyNotFoundException;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -107,9 +108,14 @@ public final class ContentProperty {
      * @param key The property key
      * @return The value in this property list with the specified key value
      *
-     * @exception NullPointerException If {@code null} is passed as an argument
+     * @exception NullPointerException      If {@code null} is passed as an argument
+     * @exception PropertyNotFoundException If property file is not exist
      */
     private String getProperty(@NonNull final ContentPropertyKey key) {
+
+        if (this.properties == null) {
+            throw new PropertyNotFoundException("The property file does not exist under the resources.");
+        }
 
         final String propertyValue = this.properties.getProperty(key.getTag());
 
