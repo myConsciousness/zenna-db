@@ -1,5 +1,5 @@
 ![Build](https://img.shields.io/badge/Build-Automated-2980b9.svg?style=for-the-badge)
-![Latest Version](https://img.shields.io/badge/Latest_Version-v1.0.0-27ae60.svg?style=for-the-badge)
+![Latest Version](https://img.shields.io/badge/Latest_Version-v1.0.1-27ae60.svg?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-Apache_2.0-e74c3c.svg?style=for-the-badge)</br>
 ![Java CI with Gradle](https://github.com/myConsciousness/zenna-db/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
@@ -7,14 +7,16 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of Contents**
 
-- [What is it?](#what-is-it)
-- [Benefits](#benefits)
-- [How To Use](#how-to-use)
-  - [1. Add the dependencies](#1-add-the-dependencies)
-- [License](#license)
-- [More Information](#more-information)
+- [Zenna DB](#zenna-db)
+  - [What is it?](#what-is-it)
+  - [Benefits](#benefits)
+  - [How To Use](#how-to-use)
+    - [1. Add the dependencies](#1-add-the-dependencies)
+  - [License](#license)
+  - [More Information](#more-information)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -38,7 +40,7 @@ Preparing...
 <dependency>
   <groupId>org.thinkit.zenna</groupId>
   <artifactId>zenna-db</artifactId>
-  <version>v1.0.0</version>
+  <version>v1.0.1</version>
 </dependency>
 
 <servers>
@@ -65,7 +67,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.thinkit.zenna:zenna-db:v1.0.0'
+    implementation 'org.thinkit.zenna:zenna-db:v1.0.1'
 }
 ```
 
