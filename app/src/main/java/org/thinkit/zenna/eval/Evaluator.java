@@ -30,5 +30,5 @@ public interface Evaluator {
      *
      * @return The object obtained by the evaluation process
      */
-    public List<Map<String, String>> evaluate();
+    public List<Map<String, Object>> evaluate();
 }

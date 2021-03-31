@@ -129,12 +129,12 @@ final class ResultType<T extends ContentEntity> implements Serializable {
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    public List<T> createResultEntities(@NonNull final List<Map<String, String>> contents) {
+    public List<T> createResultEntities(@NonNull final List<Map<String, Object>> contents) {
 
         final List<T> resultEntities = new ArrayList<>();
 
         try {
-            for (final Map<String, String> content : contents) {
+            for (final Map<String, Object> content : contents) {
                 final T resultEntity = this.getResultEntity();
                 final List<Field> fields = Arrays.asList(resultEntity.getClass().getDeclaredFields());
 

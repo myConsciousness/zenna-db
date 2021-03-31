@@ -97,9 +97,9 @@ final class Content implements Serializable {
      *
      * @return The filtered content
      */
-    protected List<Map<String, String>> filter() {
+    protected List<Map<String, Object>> filter() {
 
-        final List<Map<String, String>> filtredContent = new ArrayList<>();
+        final List<Map<String, Object>> filtredContent = new ArrayList<>();
 
         while (this.contentSelection.hasNext()) {
             if (this.contentSelection.isSelectable(this.contentCondition)) {

@@ -127,7 +127,7 @@ public final class ContentEvaluator implements Evaluator {
      * @exception NullPointerException        If {@code conditions} is {@code null}
      */
     @Override
-    public List<Map<String, String>> evaluate() {
+    public List<Map<String, Object>> evaluate() {
         this.checkPreconditions();
         return Content.from(content, attributes, conditions).filter();
     }

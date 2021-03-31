@@ -176,12 +176,12 @@ final class ContentSelection implements Iterator<ContentSelection>, Serializable
      *
      * @return The currently focused set of selected items
      */
-    protected Map<String, String> getSelection() {
+    protected Map<String, Object> getSelection() {
 
-        final Map<String, String> selection = new HashMap<>(this.attributeCount);
+        final Map<String, Object> selection = new HashMap<>(this.attributeCount);
 
         this.attributes.forEach(attribute -> {
-            selection.put(attribute, ContentNodeResolver.getString(this.selectionNodeMap, attribute));
+            selection.put(attribute, ContentNodeResolver.getObject(this.selectionNodeMap, attribute));
         });
 
         return selection;

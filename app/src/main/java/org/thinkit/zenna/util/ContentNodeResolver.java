@@ -98,4 +98,18 @@ public final class ContentNodeResolver {
     public static String getString(@NonNull Map<String, Object> nodeMap, @NonNull String contentKey) {
         return (String) nodeMap.get(contentKey);
     }
+
+    /**
+     * Returns a value of type Object based on the content key specified as an
+     * argument from the node map.
+     *
+     * @param nodeMap    The node map
+     * @param contentKey The content key
+     * @return A Object value tied to a content key stored in the node map
+     *
+     * @exception NullPointerException If {@code null} is passed as an argument
+     */
+    public static Object getObject(@NonNull Map<String, Object> nodeMap, @NonNull String contentKey) {
+        return nodeMap.get(contentKey);
+    }
 }

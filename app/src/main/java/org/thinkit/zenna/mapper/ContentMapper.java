@@ -136,7 +136,7 @@ public abstract class ContentMapper<R extends ContentEntity> implements Mapper<R
      *
      * @exception NullPointerException If {@code null} is passed as an argument
      */
-    private List<Map<String, String>> evaluateContent(@NonNull final Map<String, Object> rawContent,
+    private List<Map<String, Object>> evaluateContent(@NonNull final Map<String, Object> rawContent,
             @NonNull final Set<String> attributes, @NonNull final Map<String, String> conditions) {
         return ContentEvaluator.builder().content(rawContent).attributes(attributes).conditions(conditions).build()
                 .evaluate();
