@@ -12,11 +12,6 @@
 This document outlines security procedures and general policies for the `ThinkIT`
 project created by `Kato Shinya`.
 
-- [1. Security Policies and Procedures](#1-security-policies-and-procedures)
-  - [1.1. Reporting a Bug](#11-reporting-a-bug)
-  - [1.2. Disclosure Policy](#12-disclosure-policy)
-  - [1.3. Comments on this Policy](#13-comments-on-this-policy)
-
 ## 1.1. Reporting a Bug
 
 The `ThinkIT` team and community take all security bugs in `ThinkIT` seriously.
