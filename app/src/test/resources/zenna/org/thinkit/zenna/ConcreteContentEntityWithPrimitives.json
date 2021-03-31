@@ -1,0 +1,20 @@
+{
+    "meta": {
+        "author": "Kato Shinya",
+        "encoding": "UTF-8",
+        "description": "The content for testing of primitive data types including String.",
+        "resultType": "org.thinkit.zenna.mapper.ConcreteContentEntityWithPrimitives"
+    },
+    "selectionNodes": [
+        {
+            "node": {
+                "conditionId": "",
+                "testCount": 1,
+                "testFlag": false,
+                "testDoubleCount": 1.0,
+                "testString": "test"
+            }
+        }
+    ],
+    "conditionNodes": []
+}

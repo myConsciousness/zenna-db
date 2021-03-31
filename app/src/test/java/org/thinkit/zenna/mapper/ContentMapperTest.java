@@ -34,15 +34,15 @@ public final class ContentMapperTest {
     @Test
     void testWhenContentHasOneSelectionNode() {
 
-        final List<ConcreteContentEntity> concreteContentEntities = ConcreteContentMapper.newInstance().scan();
+        final List<ConcreteContentEntity> results = ConcreteContentMapper.newInstance().scan();
 
-        assertNotNull(concreteContentEntities);
-        assertTrue(concreteContentEntities.size() == 1);
+        assertNotNull(results);
+        assertTrue(results.size() == 1);
 
-        final ConcreteContentEntity concreteContentEntity = concreteContentEntities.get(0);
+        final ConcreteContentEntity result = results.get(0);
 
-        assertEquals("success1", concreteContentEntity.getTest1());
-        assertEquals("success2", concreteContentEntity.getTest2());
+        assertEquals("success1", result.getTest1());
+        assertEquals("success2", result.getTest2());
     }
 
     @Test
@@ -52,22 +52,22 @@ public final class ContentMapperTest {
         expectedResults.add(List.of("success1", "success2"));
         expectedResults.add(List.of("success3", "success4"));
 
-        final ConcreteContentWithConditionsMapper mapper = ConcreteContentWithConditionsMapper.newInstance();
+        final ConcreteContentWithConditionsMapper sut = ConcreteContentWithConditionsMapper.newInstance();
 
         for (int i = 0; i < 2; i++) {
 
-            mapper.setVariableName(String.valueOf(i));
+            sut.setVariableName(String.valueOf(i));
 
-            final List<ConcreteContentEntity> concreteContentEntities = mapper.scan();
+            final List<ConcreteContentEntity> results = sut.scan();
 
-            assertNotNull(concreteContentEntities);
-            assertTrue(concreteContentEntities.size() == 1);
+            assertNotNull(results);
+            assertTrue(results.size() == 1);
 
-            final ConcreteContentEntity concreteContentEntity = concreteContentEntities.get(0);
+            final ConcreteContentEntity result = results.get(0);
             final List<String> expectedResult = expectedResults.get(i);
 
-            assertEquals(expectedResult.get(0), concreteContentEntity.getTest1());
-            assertEquals(expectedResult.get(1), concreteContentEntity.getTest2());
+            assertEquals(expectedResult.get(0), result.getTest1());
+            assertEquals(expectedResult.get(1), result.getTest2());
         }
     }
 
@@ -78,23 +78,39 @@ public final class ContentMapperTest {
         expectedResults.add(List.of("success1", "success2"));
         expectedResults.add(List.of("success3", "success4"));
 
-        final MapperWithAnnotations mapper = MapperWithAnnotations.newInstance();
+        final MapperWithAnnotations sut = MapperWithAnnotations.newInstance();
 
         for (int i = 0; i < 2; i++) {
 
-            mapper.setAnotherName(String.valueOf(i));
+            sut.setAnotherName(String.valueOf(i));
 
-            final List<ConcreteContentEntityWithAttribute> concreteContentEntityWithAttributes = mapper.scan();
+            final List<ConcreteContentEntityWithAttribute> results = sut.scan();
 
-            assertNotNull(concreteContentEntityWithAttributes);
-            assertTrue(concreteContentEntityWithAttributes.size() == 1);
+            assertNotNull(results);
+            assertTrue(results.size() == 1);
 
-            final ConcreteContentEntityWithAttribute concreteContentEntityWithAttribute = concreteContentEntityWithAttributes
-                    .get(0);
+            final ConcreteContentEntityWithAttribute result = results.get(0);
             final List<String> expectedResult = expectedResults.get(i);
 
-            assertEquals(expectedResult.get(0), concreteContentEntityWithAttribute.getAnotherName1());
-            assertEquals(expectedResult.get(1), concreteContentEntityWithAttribute.getAnotherName2());
+            assertEquals(expectedResult.get(0), result.getAnotherName1());
+            assertEquals(expectedResult.get(1), result.getAnotherName2());
         }
+    }
+
+    @Test
+    void testWhenContentAndFieldHasVariousDataTypes() {
+
+        final List<ConcreteContentEntityWithPrimitives> results = ConcreteContentEntityWithPrimitivesMapper
+                .newInstance().scan();
+
+        assertNotNull(results);
+        assertTrue(results.size() == 1);
+
+        final ConcreteContentEntityWithPrimitives result = results.get(0);
+
+        assertEquals(1, result.getTestCount());
+        assertEquals(false, result.isTestFlag());
+        assertEquals(1.0, result.getTestDoubleCount());
+        assertEquals("test", result.getTestString());
     }
 }
